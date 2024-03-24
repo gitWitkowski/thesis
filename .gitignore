@@ -47,3 +47,5 @@ _deps
 # build dir
 build/*
 !build/.gitkeep 
+
+.vscode/*

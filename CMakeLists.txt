@@ -16,6 +16,8 @@ find_package(ROOT REQUIRED)
 set(CMAKE_CXX_FLAGS ${ROOT_CXX_FLAGS})
 include(${ROOT_USE_FILE})
 
+# set(CMAKE_CXX_STANDARD 20)
+
 set(INCLUDES ${PROJECT_SOURCE_DIR}/include)
 include_directories(${INCLUDES})
 
