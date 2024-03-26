@@ -1,88 +1,97 @@
 #include <iostream>
-#include <map>
 #include "TRandom3.h"
 #include "TH1F.h"
 #include "TApplication.h"
 #include "TCanvas.h"
 #include "TRootCanvas.h"
+#include "THStack.h"
 #include "entropy.h"
 
-void DrawHist(int argc, char** argv, std::vector<Float_t> &d) {
+void DrawHist(int argc, char** argv, std::vector<float> &d1, std::vector<float> &d2) {
 
    // TApplication for displaying graphics
    TApplication app("app", &argc, argv);
-   TCanvas* c = new TCanvas("c", "Title", 0, 0, 800, 600);
-   c->Modified(); c->Update();
-   TRootCanvas *rc = (TRootCanvas *)c->GetCanvasImp();
+   auto cst1 = new TCanvas("cst1","cst1",700,400);
+   cst1->Divide(2,1);
+   cst1->Modified(); cst1->Update();
+   TRootCanvas *rc = (TRootCanvas *)cst1->GetCanvasImp();
    // terminate program on window close
    rc->Connect("CloseWindow()", "TApplication", gApplication, "Terminate()");
 
-   // histogram from -1 to 6 with 70 bins
-   TH1F h1("legend","Histogram",70,-1,6);
-   for(int i=0; i<d.size(); ++i)
-      h1.Fill(d[i]); // fill histogram with data
-   
-   // draw window
-   h1.Draw();
+   // first histogram
+   auto hst11 = new TH1F("hst11", "", 70, -1, 6);
+   for(size_t i=0; i<d1.size(); ++i)
+      hst11->Fill(d1[i]); // fill histogram with data
+ 
+   // second histogram
+   auto hst12 = new TH1F("hst12", "", 70, -1, 6);
+   for(size_t i=0; i<d2.size(); ++i)
+      hst12->Fill(d2[i]); // fill histogram with data
+  
+   // position and draw histograms
+   cst1->cd(1); hst12->Draw();
+   cst1->cd(2); hst11->Draw();
+
+   // run app
    app.Run();
 }
 
 int main(int argc, char** argv){
    
    // number of generated numbers
-   constexpr Int_t n = 4'000;
+   constexpr size_t n = 4'000;
 
-   std::vector<Float_t> data(n);
+   // number of times to repeat experiment 
+   size_t repeat_num = 10;
+
+   // arrays for scores from different tries
+   double scores_for_exp[repeat_num];
+   double scores_for_uniform[repeat_num];
+
+   ////////////////////////////////////
+   // exponential distribution
+   ////////////////////////////////////
+
+   // vector for generated data
+   std::vector<float> data_exp(n);
    
-   // map: <byte, number of occurrences>
-   std::map<unsigned char const, size_t> occurrence_map;
-
-   // random number generator
-   TRandom3 rng(0);
-
-   for(int i=0; i<n; ++i)
-      data[i] = rng.Exp(1.0);
-      // data[i] = rng.Uniform();
-
-   // for each generated number
-   for(const Float_t num : data){
-
-      // reading float number as sequence of 4 bytes
-      // https://www.h-schmidt.net/FloatConverter/IEEE754.html
-      unsigned char const *bytes = reinterpret_cast<unsigned char const *>(&num);
-
-      // for each byte (4 byte float)
-      for(std::size_t i = 0; i != sizeof(Float_t); ++i){
-         // std::printf("0x%02X\n", p[i]);
-      
-         // find byte in map
-         auto it = occurrence_map.find(bytes[i]); 
-
-         if (it == occurrence_map.end()) {
-            // not found:
-            // insert byte into map with count=1 
-            occurrence_map.insert(std::make_pair(bytes[i], 1));    
-         } else {
-            // found:
-            // increase number of occurrences by 1
-            ++(it->second);
-         }           
-      }
+   // repeat for more reliable result 
+   for(int i=0; i<repeat_num; ++i){
+      exp_array(data_exp, n);
+      std::vector<double> X = count_bytes(data_exp, n);
+      scores_for_exp[i] = calc_entropy(X);
    }
-   
-   // vector of probabilities
-   std::vector<double> X(0);
 
-   // fill the vector
-   for(auto el : occurrence_map){
-      // number of occurrences / (number of numbers * 4 bytes)
-      X.push_back(double(el.second) / (4*n));
-   }
+   // calculate average
+   double sum = 0.0;
+   for(int i=0; i<repeat_num; ++i)
+      sum += scores_for_exp[i];
+
+   std::cout << "Average entropy exponential distribution: " << sum / repeat_num << "\n";
+
+   ////////////////////////////////////
+   // uniform distribution
+   ////////////////////////////////////
+
+   // vector for generated data
+   std::vector<float> data_uniform(n);
    
-   std::cout << "Entropy: " << calc_entropy(X) << "\n";
+   // repeat for more reliable result 
+   for(int i=0; i<repeat_num; ++i){
+      uniform_array(data_uniform, n);
+      std::vector<double> X = count_bytes(data_uniform, n);
+      scores_for_exp[i] = calc_entropy(X);
+   }
+
+   // calculate average
+   sum = 0.0;
+   for(int i=0; i<repeat_num; ++i)
+      sum += scores_for_exp[i];
+
+   std::cout << "Average entropy uniform distribution: " << sum / repeat_num << "\n";
 
    // draw hist to screen
-   DrawHist(argc, argv, data);
+   DrawHist(argc, argv, data_exp, data_uniform);
 
    return 0;
 }
