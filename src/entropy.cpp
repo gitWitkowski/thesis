@@ -14,7 +14,7 @@ double calc_entropy(std::vector<double> X){
     return -sum;
 }
 
-void exp_array(std::vector<float> &arr, size_t n){
+void exp_array(std::vector<float> &arr, size_t n, std::function<float(float)> f){
     // random number generator
     TRandom3 rng(0);
 
@@ -22,11 +22,15 @@ void exp_array(std::vector<float> &arr, size_t n){
     arr.resize(n);
 
     // fill with values
-    for(size_t i=0; i<n; ++i)
-        arr[i] = rng.Exp(1.0);
+    for(size_t i=0; i<n; ++i){
+      if(f)
+         arr[i] = f(rng.Exp(1.0));
+      else
+         arr[i] = rng.Exp(1.0);
+    }
 }
 
-void uniform_array(std::vector<float> &arr, size_t n){
+void uniform_array(std::vector<float> &arr, size_t n, std::function<float(float)> f){
     // random number generator
     TRandom3 rng(0);
 
@@ -34,8 +38,12 @@ void uniform_array(std::vector<float> &arr, size_t n){
     arr.resize(n);
 
     // fill with values
-    for(size_t i=0; i<n; ++i)
-        arr[i] = rng.Uniform();
+    for(size_t i=0; i<n; ++i){
+      if(f)
+         arr[i] = f(rng.Uniform());
+      else
+         arr[i] = rng.Uniform();
+    }
 }
 
 std::map<unsigned char const, size_t> count_bytes(const std::vector<float> &data){

@@ -22,8 +22,9 @@ double calc_entropy(std::vector<double> X);
  * 
  * @param arr float array pointer
  * @param n length of an array
+ * @param f transform function
  */
-void exp_array(std::vector<float> &arr, size_t n);
+void exp_array(std::vector<float> &arr, size_t n, std::function<float(float)> f = nullptr);
 
 /**
  * Fills given vector with float numbers using uniform distribution
@@ -31,7 +32,7 @@ void exp_array(std::vector<float> &arr, size_t n);
  * @param arr reference to vector for float values
  * @param n length of an array
  */
-void uniform_array(std::vector<float> &arr, size_t n);
+void uniform_array(std::vector<float> &arr, size_t n, std::function<float(float)> f = nullptr);
 
 /**
  * Counts number of occurrences of each byte from given array
