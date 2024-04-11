@@ -79,3 +79,10 @@ std::vector<double> count_bytes(const std::vector<float> &data, size_t n){
    
    return X;
 }
+
+void save_histogram_to_file(TH1 *hist, std::string file_path){
+   TCanvas *c = new TCanvas();
+   hist->Draw();
+   c->SaveAs(file_name.c_str());
+   delete c;
+}
