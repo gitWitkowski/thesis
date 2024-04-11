@@ -35,13 +35,22 @@ void uniform_array(std::vector<float> &arr, size_t n);
 
 /**
  * Counts number of occurrences of each byte from given array
- * and returns vector X of probabilities of each byte appearance
+ * and returns map of bytes occurences
  * 
  * @param arr reference to vector for float values
- * @param n length of an array
+ * @return map with byte as key and its number of occurences as value
+ */
+std::map<unsigned char const, size_t> count_bytes(const std::vector<float> &data);
+
+/**
+ * Calculates probability of occurence for each byte in a map
+ * and returns vector X of probabilities
+ * 
+ * @param occurrence_map map with byte as key and its number of occurences as value
+ * @param n number of generated samples
  * @return vector of probabilities
  */
-std::vector<double> count_bytes(const std::vector<float> &data, size_t n);
+std::vector<double> calc_probability(std::map<unsigned char const, size_t> &occurrence_map, size_t n);
 
 /**
  * Counts number of occurrences of each byte from given array

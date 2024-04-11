@@ -58,7 +58,8 @@ int main(int argc, char** argv){
    // repeat for more reliable result 
    for(int i=0; i<repeat_num; ++i){
       exp_array(data_exp, n);
-      std::vector<double> X = count_bytes(data_exp, n);
+      std::map<unsigned char const, size_t> map = count_bytes(data_exp, n);
+      std::vector<double> X = calc_probability(map, n);
       scores_for_exp[i] = calc_entropy(X);
    }
 
@@ -79,7 +80,8 @@ int main(int argc, char** argv){
    // repeat for more reliable result 
    for(int i=0; i<repeat_num; ++i){
       uniform_array(data_uniform, n);
-      std::vector<double> X = count_bytes(data_uniform, n);
+      std::map<unsigned char const, size_t> map = count_bytes(data_exp, n);
+      std::vector<double> X = calc_probability(map, n);
       scores_for_exp[i] = calc_entropy(X);
    }
 

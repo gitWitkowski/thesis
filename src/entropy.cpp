@@ -38,7 +38,7 @@ void uniform_array(std::vector<float> &arr, size_t n){
         arr[i] = rng.Uniform();
 }
 
-std::vector<double> count_bytes(const std::vector<float> &data, size_t n){
+std::map<unsigned char const, size_t> count_bytes(const std::vector<float> &data){
    // map: <byte, number of occurrences>
    std::map<unsigned char const, size_t> occurrence_map;
 
@@ -67,7 +67,11 @@ std::vector<double> count_bytes(const std::vector<float> &data, size_t n){
          }           
       }
    }
-   
+
+   return occurrence_map;
+}
+
+std::vector<double> calc_probability(std::map<unsigned char const, size_t> &occurrence_map, size_t n){
    // vector of probabilities
    std::vector<double> X(0);
 
@@ -83,6 +87,6 @@ std::vector<double> count_bytes(const std::vector<float> &data, size_t n){
 void save_histogram_to_file(TH1 *hist, std::string file_path){
    TCanvas *c = new TCanvas();
    hist->Draw();
-   c->SaveAs(file_name.c_str());
+   c->SaveAs(file_path.c_str());
    delete c;
 }
