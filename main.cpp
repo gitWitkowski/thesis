@@ -41,34 +41,57 @@ int main(int argc, char** argv){
    // number of generated numbers
    constexpr size_t n = 4'000;
 
-   // number of times to repeat experiment 
-   size_t repeat_num = 10;
-
-   // arrays for scores from different tries
-   double scores_for_exp[repeat_num];
-   double scores_for_uniform[repeat_num];
-
    ////////////////////////////////////
    // exponential distribution
    ////////////////////////////////////
 
-   // vector for generated data
-   std::vector<float> data_exp(n);
+   	// vector for generated data
+   	std::vector<float> data_exp(n);
    
-   // repeat for more reliable result 
-   for(int i=0; i<repeat_num; ++i){
-      exp_array(data_exp, n);
-      std::map<unsigned char const, size_t> map = count_bytes(data_exp);
-      std::vector<double> X = calc_probability(map, n);
-      scores_for_exp[i] = calc_entropy(X);
-   }
+    exp_array(data_exp, n);
+    std::map<unsigned char const, size_t> map = count_bytes(data_exp);
+    std::vector<double> X = calc_probability(map, n);
+	double entropy = calc_entropy(X);
+	auto hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
+	"exponential");
+	save_histogram_to_file(hist, "exponential.png");
+	delete hist;
 
-   // calculate average
-   double sum = 0.0;
-   for(int i=0; i<repeat_num; ++i)
-      sum += scores_for_exp[i];
+	exp_array(data_exp, n, [](float x){return round(x * 10.0) / 10.0;});
+    map = count_bytes(data_exp);
+    X = calc_probability(map, n);
+	entropy = calc_entropy(X);
+	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
+	"exponential_rounded_to_1dm");
+	save_histogram_to_file(hist, "exponential_rounded_to_1dm.png");
+	delete hist;
 
-   std::cout << "Average entropy exponential distribution: " << sum / repeat_num << "\n";
+	exp_array(data_exp, n, [](float x){return round(x * 100.0) / 100.0;});
+    map = count_bytes(data_exp);
+    X = calc_probability(map, n);
+	entropy = calc_entropy(X);
+	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
+	"exponential_rounded_to_2dm");
+	save_histogram_to_file(hist, "exponential_rounded_to_2dm.png");
+	delete hist;
+
+	exp_array(data_exp, n, [](float x){return round(x * 1000.0) / 1000.0;});
+    map = count_bytes(data_exp);
+    X = calc_probability(map, n);
+	entropy = calc_entropy(X);
+	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
+	"exponential_rounded_to_3dm");
+	save_histogram_to_file(hist, "exponential_rounded_to_3dm.png");
+	delete hist;
+
+	exp_array(data_exp, n, [](float x){return round(x);});
+    map = count_bytes(data_exp);
+    X = calc_probability(map, n);
+	entropy = calc_entropy(X);
+	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
+	"exponential_rounded_to_0dm");
+	save_histogram_to_file(hist, "exponential_rounded_to_0dm.png");
+	delete hist;
 
    ////////////////////////////////////
    // uniform distribution
@@ -77,23 +100,50 @@ int main(int argc, char** argv){
    // vector for generated data
    std::vector<float> data_uniform(n);
    
-   // repeat for more reliable result 
-   for(int i=0; i<repeat_num; ++i){
-      uniform_array(data_uniform, n);
-      std::map<unsigned char const, size_t> map = count_bytes(data_uniform);
-      std::vector<double> X = calc_probability(map, n);
-      scores_for_uniform[i] = calc_entropy(X);
-   }
+	uniform_array(data_uniform, n);
+    map = count_bytes(data_uniform);
+    X = calc_probability(map, n);
+	entropy = calc_entropy(X);
+	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
+	"uniform");
+	save_histogram_to_file(hist, "uniform.png");
+	delete hist;
 
-   // calculate average
-   sum = 0.0;
-   for(int i=0; i<repeat_num; ++i)
-      sum += scores_for_uniform[i];
+	uniform_array(data_uniform, n, [](float x){return round(x * 10.0) / 10.0;});
+    map = count_bytes(data_uniform);
+    X = calc_probability(map, n);
+	entropy = calc_entropy(X);
+	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
+	"uniform_rounded_to_1dm");
+	save_histogram_to_file(hist, "uniform_rounded_to_1dm.png");
+	delete hist;
 
-   std::cout << "Average entropy uniform distribution: " << sum / repeat_num << "\n";
+	uniform_array(data_uniform, n, [](float x){return round(x * 100.0) / 100.0;});
+    map = count_bytes(data_uniform);
+    X = calc_probability(map, n);
+	entropy = calc_entropy(X);
+	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
+	"uniform_rounded_to_2dm");
+	save_histogram_to_file(hist, "uniform_rounded_to_2dm.png");
+	delete hist;
 
-   // draw hist to screen
-   DrawHist(argc, argv, data_exp, data_uniform);
+	uniform_array(data_uniform, n, [](float x){return round(x * 1000.0) / 1000.0;});
+    map = count_bytes(data_uniform);
+    X = calc_probability(map, n);
+	entropy = calc_entropy(X);
+	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
+	"uniform_rounded_to_3dm");
+	save_histogram_to_file(hist, "uniform_rounded_to_3dm.png");
+	delete hist;
+
+	uniform_array(data_uniform, n, [](float x){return round(x);});
+    map = count_bytes(data_uniform);
+    X = calc_probability(map, n);
+	entropy = calc_entropy(X);
+	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
+	"uniform_rounded_to_0dm");
+	save_histogram_to_file(hist, "uniform_rounded_to_0dm.png");
+	delete hist;
 
    return 0;
 }
