@@ -40,9 +40,9 @@ void uniform_array(std::vector<float> &arr, size_t n, std::function<float(float)
     // fill with values
     for(size_t i=0; i<n; ++i){
       if(f)
-         arr[i] = f(rng.Uniform());
+         arr[i] = f(rng.Uniform(100));
       else
-         arr[i] = rng.Uniform();
+         arr[i] = rng.Uniform(100);
     }
 }
 
@@ -97,4 +97,21 @@ void save_histogram_to_file(TH1 *hist, std::string file_path){
    hist->Draw();
    c->SaveAs(file_path.c_str());
    delete c;
+}
+
+TH1F *map_to_hist(
+   std::map<unsigned char const, size_t> &occurrence_map,
+   std::string name,
+   std::string title
+   ){
+    std::vector<float> tab(256); // 256 possible bytes
+    for(auto [key, pair] : occurrence_map)
+        tab[static_cast<int>(key)] = pair;
+
+   TH1F *hist = new TH1F(name.c_str(), title.c_str(), 256, 0, 256);
+   for(size_t i=0; i<256; ++i)
+      for(int j=0; j<tab[i]; ++j)
+         hist->Fill(i); // fill histogram with data
+
+   return hist;
 }

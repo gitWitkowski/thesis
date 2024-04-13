@@ -61,3 +61,9 @@ std::vector<double> calc_probability(std::map<unsigned char const, size_t> &occu
  * @param file_path string where to save the file
  */
 void save_histogram_to_file(TH1 *hist, std::string file_path);
+
+TH1F *map_to_hist(
+    std::map<unsigned char const, size_t> &occurrence_map,
+    std::string name = "",
+    std::string title = ""
+    );
