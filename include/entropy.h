@@ -54,14 +54,22 @@ std::map<unsigned char const, size_t> count_bytes(const std::vector<float> &data
 std::vector<double> calc_probability(std::map<unsigned char const, size_t> &occurrence_map, size_t n);
 
 /**
- * Counts number of occurrences of each byte from given array
- * and returns vector X of probabilities of each byte appearance
+ * Save histogram to a file with given path
  * 
  * @param hist pointer to histogram class
  * @param file_path string where to save the file
  */
 void save_histogram_to_file(TH1 *hist, std::string file_path);
 
+/**
+ * Takes map and returns pointer to histogram
+ * presenting number of byte occurences
+ * 
+ * @param occurrence_map reference to map
+ * @param name string for name
+ * @param title string for title
+ * @return pointer to histogram TH1F *
+ */
 TH1F *map_to_hist(
     std::map<unsigned char const, size_t> &occurrence_map,
     std::string name = "",
