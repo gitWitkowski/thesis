@@ -9,46 +9,46 @@
 
 void DrawHist(int argc, char** argv, std::vector<float> &d1, std::vector<float> &d2) {
 
-   // TApplication for displaying graphics
-   TApplication app("app", &argc, argv);
-   auto cst1 = new TCanvas("cst1","cst1",700,400);
-   cst1->Divide(2,1);
-   cst1->Modified(); cst1->Update();
-   TRootCanvas *rc = (TRootCanvas *)cst1->GetCanvasImp();
-   // terminate program on window close
-   rc->Connect("CloseWindow()", "TApplication", gApplication, "Terminate()");
+	// TApplication for displaying graphics
+   	TApplication app("app", &argc, argv);
+   	auto cst1 = new TCanvas("cst1","cst1",700,400);
+   	cst1->Divide(2,1);
+   	cst1->Modified(); cst1->Update();
+   	TRootCanvas *rc = (TRootCanvas *)cst1->GetCanvasImp();
+   	// terminate program on window close
+   	rc->Connect("CloseWindow()", "TApplication", gApplication, "Terminate()");
 
-   // first histogram
-   auto hst11 = new TH1F("hst11", "", 70, -1, 6);
-   for(size_t i=0; i<d1.size(); ++i)
-      hst11->Fill(d1[i]); // fill histogram with data
+   	// first histogram
+   	auto hst11 = new TH1F("hst11", "", 70, -1, 6);
+   	for(size_t i=0; i<d1.size(); ++i)
+		hst11->Fill(d1[i]); // fill histogram with data
  
-   // second histogram
-   auto hst12 = new TH1F("hst12", "", 70, -1, 6);
-   for(size_t i=0; i<d2.size(); ++i)
-      hst12->Fill(d2[i]); // fill histogram with data
+   	// second histogram
+   	auto hst12 = new TH1F("hst12", "", 70, -1, 6);
+   	for(size_t i=0; i<d2.size(); ++i)
+      	hst12->Fill(d2[i]); // fill histogram with data
   
-   // position and draw histograms
-   cst1->cd(1); hst12->Draw();
-   cst1->cd(2); hst11->Draw();
+   	// position and draw histograms
+   	cst1->cd(1); hst12->Draw();
+   	cst1->cd(2); hst11->Draw();
 
-   // run app
-   app.Run();
+   	// run app
+   	app.Run();
 }
 
 int main(int argc, char** argv){
    
-   // number of generated numbers
-   constexpr size_t n = 4'000;
+   	// number of generated numbers
+	constexpr size_t n = 4'000;
 
-   ////////////////////////////////////
-   // exponential distribution
-   ////////////////////////////////////
+   	////////////////////////////////////
+   	// exponential distribution
+   	////////////////////////////////////
 
    	// vector for generated data
    	std::vector<float> data_exp(n);
    
-    exp_array(data_exp, n);
+	exp_array(data_exp, n);
     std::map<unsigned char const, size_t> map = count_bytes(data_exp);
     std::vector<double> X = calc_probability(map, n);
 	double entropy = calc_entropy(X);
@@ -68,7 +68,7 @@ int main(int argc, char** argv){
 
 	exp_array(data_exp, n, [](float x){return round(x * 100.0) / 100.0;});
     map = count_bytes(data_exp);
-    X = calc_probability(map, n);
+	X = calc_probability(map, n);
 	entropy = calc_entropy(X);
 	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
 	"exponential_rounded_to_2dm");
@@ -93,12 +93,12 @@ int main(int argc, char** argv){
 	save_histogram_to_file(hist, "exponential_rounded_to_0dm.png");
 	delete hist;
 
-   ////////////////////////////////////
-   // uniform distribution
-   ////////////////////////////////////
+   	////////////////////////////////////
+   	// uniform distribution
+   	////////////////////////////////////
 
-   // vector for generated data
-   std::vector<float> data_uniform(n);
+   	// vector for generated data
+   	std::vector<float> data_uniform(n);
    
 	uniform_array(data_uniform, n);
     map = count_bytes(data_uniform);
@@ -145,5 +145,5 @@ int main(int argc, char** argv){
 	save_histogram_to_file(hist, "uniform_rounded_to_0dm.png");
 	delete hist;
 
-   return 0;
+   	return 0;
 }
