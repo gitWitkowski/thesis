@@ -40,7 +40,7 @@ void DrawHist(int argc, char** argv, std::vector<float> &d1, std::vector<float> 
 int main(int argc, char** argv){
 
 	// directory for images to be saved
-	const std::string IMG_DIR_PATH = std::filesystem::current_path().string() + "/../img/";
+	const std::string IMG_DIR_PATH = std::filesystem::current_path().string() + "/../img1/";
 
 	// create dir
 	if (!std::filesystem::exists(IMG_DIR_PATH)) {

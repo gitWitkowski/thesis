@@ -32,3 +32,12 @@ target_link_libraries(main1 ${ROOT_LIBRARIES})
 target_link_libraries(main1 ZLIB::ZLIB)
 
 add_custom_target(run1 ./main1)
+
+add_executable(main2 main2.cpp ${SOURCES})
+
+target_include_directories(main2 PUBLIC ${ROOT_INCLUDE_DIRS})
+target_link_directories(main2 PUBLIC ${ROOT_LIBRARY_DIR})
+target_link_libraries(main2 ${ROOT_LIBRARIES})
+target_link_libraries(main2 ZLIB::ZLIB)
+
+add_custom_target(run2 ./main2)
