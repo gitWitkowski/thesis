@@ -12,7 +12,6 @@ set(CMAKE_CXX_FLAGS_DEBUG_INIT "-Wall")
 set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Wall")
 
 find_package(ZLIB REQUIRED)
-
 find_package(ROOT REQUIRED)
 
 set(CMAKE_CXX_FLAGS ${ROOT_CXX_FLAGS})
@@ -25,11 +24,11 @@ include_directories(${INCLUDES})
 
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
-add_executable(${PROJECT_NAME} main.cpp ${SOURCES})
+add_executable(main1 main1.cpp ${SOURCES})
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${ROOT_INCLUDE_DIRS})
-target_link_directories(${PROJECT_NAME} PUBLIC ${ROOT_LIBRARY_DIR})
-target_link_libraries(${PROJECT_NAME} ${ROOT_LIBRARIES})
-target_link_libraries(${PROJECT_NAME} ZLIB::ZLIB)
+target_include_directories(main1 PUBLIC ${ROOT_INCLUDE_DIRS})
+target_link_directories(main1 PUBLIC ${ROOT_LIBRARY_DIR})
+target_link_libraries(main1 ${ROOT_LIBRARIES})
+target_link_libraries(main1 ZLIB::ZLIB)
 
-add_custom_target(run ./${PROJECT_NAME})
+add_custom_target(run1 ./main1)
