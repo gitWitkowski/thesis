@@ -1,4 +1,5 @@
 #include <iostream>
+#include <filesystem>
 #include "TRandom3.h"
 #include "TH1F.h"
 #include "TApplication.h"
@@ -37,7 +38,10 @@ void DrawHist(int argc, char** argv, std::vector<float> &d1, std::vector<float> 
 }
 
 int main(int argc, char** argv){
-   
+
+	// directory for images to be saved
+	const std::string IMG_DIR_PATH = std::filesystem::current_path().string() + "/../img/";
+
    	// number of generated numbers
 	constexpr size_t n = 4'000;
 
@@ -54,7 +58,7 @@ int main(int argc, char** argv){
 	double entropy = calc_entropy(X);
 	auto hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
 	"exponential");
-	save_histogram_to_file(hist, "exponential.png");
+	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential.png");
 	delete hist;
 
 	exp_array(data_exp, n, [](float x){return round(x * 10.0) / 10.0;});
@@ -63,7 +67,7 @@ int main(int argc, char** argv){
 	entropy = calc_entropy(X);
 	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
 	"exponential_rounded_to_1dm");
-	save_histogram_to_file(hist, "exponential_rounded_to_1dm.png");
+	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential_rounded_to_1dm.png");
 	delete hist;
 
 	exp_array(data_exp, n, [](float x){return round(x * 100.0) / 100.0;});
@@ -72,7 +76,7 @@ int main(int argc, char** argv){
 	entropy = calc_entropy(X);
 	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
 	"exponential_rounded_to_2dm");
-	save_histogram_to_file(hist, "exponential_rounded_to_2dm.png");
+	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential_rounded_to_2dm.png");
 	delete hist;
 
 	exp_array(data_exp, n, [](float x){return round(x * 1000.0) / 1000.0;});
@@ -81,7 +85,7 @@ int main(int argc, char** argv){
 	entropy = calc_entropy(X);
 	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
 	"exponential_rounded_to_3dm");
-	save_histogram_to_file(hist, "exponential_rounded_to_3dm.png");
+	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential_rounded_to_3dm.png");
 	delete hist;
 
 	exp_array(data_exp, n, [](float x){return round(x);});
@@ -90,7 +94,7 @@ int main(int argc, char** argv){
 	entropy = calc_entropy(X);
 	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
 	"exponential_rounded_to_0dm");
-	save_histogram_to_file(hist, "exponential_rounded_to_0dm.png");
+	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential_rounded_to_0dm.png");
 	delete hist;
 
    	////////////////////////////////////
@@ -106,7 +110,7 @@ int main(int argc, char** argv){
 	entropy = calc_entropy(X);
 	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
 	"uniform");
-	save_histogram_to_file(hist, "uniform.png");
+	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform.png");
 	delete hist;
 
 	uniform_array(data_uniform, n, [](float x){return round(x * 10.0) / 10.0;});
@@ -115,7 +119,7 @@ int main(int argc, char** argv){
 	entropy = calc_entropy(X);
 	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
 	"uniform_rounded_to_1dm");
-	save_histogram_to_file(hist, "uniform_rounded_to_1dm.png");
+	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform_rounded_to_1dm.png");
 	delete hist;
 
 	uniform_array(data_uniform, n, [](float x){return round(x * 100.0) / 100.0;});
@@ -124,7 +128,7 @@ int main(int argc, char** argv){
 	entropy = calc_entropy(X);
 	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
 	"uniform_rounded_to_2dm");
-	save_histogram_to_file(hist, "uniform_rounded_to_2dm.png");
+	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform_rounded_to_2dm.png");
 	delete hist;
 
 	uniform_array(data_uniform, n, [](float x){return round(x * 1000.0) / 1000.0;});
@@ -133,7 +137,7 @@ int main(int argc, char** argv){
 	entropy = calc_entropy(X);
 	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
 	"uniform_rounded_to_3dm");
-	save_histogram_to_file(hist, "uniform_rounded_to_3dm.png");
+	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform_rounded_to_3dm.png");
 	delete hist;
 
 	uniform_array(data_uniform, n, [](float x){return round(x);});
@@ -142,7 +146,7 @@ int main(int argc, char** argv){
 	entropy = calc_entropy(X);
 	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
 	"uniform_rounded_to_0dm");
-	save_histogram_to_file(hist, "uniform_rounded_to_0dm.png");
+	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform_rounded_to_0dm.png");
 	delete hist;
 
    	return 0;
