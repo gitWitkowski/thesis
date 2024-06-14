@@ -1,6 +1,7 @@
 ## Technologies used
 - C++17
 - [ROOT v6.30.04](https://root.cern/install/)
+- [zlib](https://www.zlib.net/) (zlib1g-dev)
 - cmake
  
 ## How to run
