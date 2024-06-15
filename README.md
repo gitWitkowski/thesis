@@ -17,5 +17,10 @@ cmake ../
 3.  Build and run the project
 ```bash
 make
-make run
+# depending on the executable you want to run
+make run1
+# or
+make run2
+# or
+make run3
 ``` 

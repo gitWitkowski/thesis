@@ -79,6 +79,30 @@ std::map<unsigned char const, size_t> count_bytes(const std::vector<float> &data
    	return occurrence_map;
 }
 
+std::map<unsigned char const, size_t> count_bytes(const std::vector<unsigned char> &data){
+   	// map: <byte, number of occurrences>
+   	std::map<unsigned char const, size_t> occurrence_map;
+
+   	// for each generated number
+   	for(const unsigned char &byte : data){
+      
+         	// find byte in map
+         	auto it = occurrence_map.find(byte); 
+
+         	if (it == occurrence_map.end()) {
+            	// not found:
+            	// insert byte into map with count=1 
+            	occurrence_map.insert(std::make_pair(byte, 1));    
+         	} else {
+            	// found:
+            	// increase number of occurrences by 1
+            	++(it->second);
+         	}           
+    }
+
+   	return occurrence_map;
+}
+
 std::vector<double> calc_probability(std::map<unsigned char const, size_t> &occurrence_map, size_t n){
 	// vector of probabilities
    	std::vector<double> X(0);
@@ -114,4 +138,61 @@ TH1F *map_to_hist(
         	hist->Fill(i); // fill histogram with data
 
 	return hist;
+}
+
+std::vector<unsigned char> float_to_char_vector(const std::vector<float>& float_data) {
+	// prepare char vector
+    std::vector<unsigned char> char_data;
+    char_data.reserve(float_data.size() * sizeof(float));
+
+	// cast values from float to unsigned char and insert into vector
+    for (const auto& f : float_data) {
+        unsigned char const* begin = reinterpret_cast<unsigned char const*>(&f);
+        char_data.insert(char_data.end(), begin, begin + sizeof(float));
+    }
+
+    return char_data;
+}
+
+// https://www.zlib.net/manual.html and chat gpt
+std::vector<unsigned char> compress_vector(const std::vector<unsigned char>& data) {
+    uLongf compressed_size = compressBound(data.size());
+    std::vector<unsigned char> compressed_data(compressed_size);
+
+    if (compress(compressed_data.data(), &compressed_size, data.data(), data.size()) != Z_OK) {
+        throw std::runtime_error("Compression failed!");
+    }
+
+    compressed_data.resize(compressed_size); // Adjust the size to the actual compressed size
+    return compressed_data;
+}
+
+// https://www.zlib.net/manual.html and chat gpt
+std::vector<unsigned char> deflate_vector(const std::vector<unsigned char>& data, int compression_level) {
+    z_stream strm;
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+
+    if (deflateInit(&strm, compression_level) != Z_OK) {
+        throw std::runtime_error("deflateInit failed!");
+    }
+
+    strm.avail_in = data.size();
+    strm.next_in = const_cast<Bytef*>(reinterpret_cast<const Bytef*>(data.data()));
+
+    uLongf compressed_size = deflateBound(&strm, data.size());
+    std::vector<unsigned char> compressed_data(compressed_size);
+
+    strm.avail_out = compressed_size;
+    strm.next_out = compressed_data.data();
+
+    if (deflate(&strm, Z_FINISH) != Z_STREAM_END) {
+        deflateEnd(&strm);
+        throw std::runtime_error("deflate failed!");
+    }
+
+    compressed_data.resize(compressed_size - strm.avail_out);
+    deflateEnd(&strm);
+    return compressed_data;
 }

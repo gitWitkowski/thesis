@@ -11,6 +11,9 @@ endif ()
 set(CMAKE_CXX_FLAGS_DEBUG_INIT "-Wall")
 set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Wall")
 
+set(CMAKE_CXX_FLAGS_DEBUG_INIT "-lz")
+set(CMAKE_CXX_FLAGS_RELEASE_INIT "-lz")
+
 find_package(ZLIB REQUIRED)
 find_package(ROOT REQUIRED)
 
@@ -41,3 +44,12 @@ target_link_libraries(main2 ${ROOT_LIBRARIES})
 target_link_libraries(main2 ZLIB::ZLIB)
 
 add_custom_target(run2 ./main2)
+
+add_executable(main3 main3.cpp ${SOURCES})
+
+target_include_directories(main3 PUBLIC ${ROOT_INCLUDE_DIRS})
+target_link_directories(main3 PUBLIC ${ROOT_LIBRARY_DIR})
+target_link_libraries(main3 ${ROOT_LIBRARIES})
+target_link_libraries(main3 ZLIB::ZLIB)
+
+add_custom_target(run3 ./main3)
