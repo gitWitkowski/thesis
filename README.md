@@ -9,18 +9,11 @@
 ```bash
 source /path/to/root/install_dir/bin/thisroot.sh
 ```
-2.  Generate a project buildsystem
+2.  Make run.sh executable
 ```bash
-cd build
-cmake ../
+chmod +x run.sh
 ```
-3.  Build and run the project
+3.  Run shell script
 ```bash
-make
-# depending on the executable you want to run
-make run1
-# or
-make run2
-# or
-make run3
+./ruh.sh
 ``` 

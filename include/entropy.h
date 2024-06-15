@@ -10,6 +10,7 @@
 #include <string>
 #include <zlib.h>
 #include <filesystem>
+#include <fstream>
 
 /// @brief path to data directory
 const std::string DATA_DIR_PATH = std::filesystem::current_path().string() + "/../data/";
