@@ -9,6 +9,13 @@
 #include "TCanvas.h"
 #include <string>
 #include <zlib.h>
+#include <filesystem>
+
+/// @brief path to data directory
+const std::string DATA_DIR_PATH = std::filesystem::current_path().string() + "/../data/";
+
+/// @brief number of generated numbers
+constexpr size_t N = 4'000;
 
 /**
  * Calculates entropy based on given input values
