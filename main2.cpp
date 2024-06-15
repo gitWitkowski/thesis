@@ -9,6 +9,9 @@
 
 int main(int argc, char** argv){
 
+	// txt file for generated data
+	std::ofstream data_file(DATA_DIR_PATH + "data.txt", std::ios::app);
+
 	// directory for images to be saved
 	const std::string IMG_DIR_PATH = DATA_DIR_PATH + "img2/";
 
@@ -35,6 +38,8 @@ int main(int argc, char** argv){
 	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential.png");
 	delete hist;
 
+	// data_file << N << ";" << "exponential;NO;NO;" << entropy << "\n"; 
+
 	exp_array(data_exp, N, [](float x){return round(x * 8.0) / 8.0;});
     map = count_bytes(data_exp);
     X = calc_probability(map, N);
@@ -43,6 +48,8 @@ int main(int argc, char** argv){
 	"exponential_rounded_8");
 	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential_rounded_8.png");
 	delete hist;
+
+	data_file << N << ";" << "exponential;8.0/8.0;NO;" << entropy << "\n"; 
 
 	exp_array(data_exp, N, [](float x){return round(x * 10.0) / 10.0;});
     map = count_bytes(data_exp);
@@ -53,6 +60,8 @@ int main(int argc, char** argv){
 	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential_rounded_10.png");
 	delete hist;
 
+	// data_file << N << ";" << "exponential;10.0/10.0;NO;" << entropy << "\n";
+
 	exp_array(data_exp, N, [](float x){return round(x * 16.0) / 16.0;});
     map = count_bytes(data_exp);
     X = calc_probability(map, N);
@@ -62,6 +71,8 @@ int main(int argc, char** argv){
 	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential_rounded_16.png");
 	delete hist;
 
+	data_file << N << ";" << "exponential;16.0/16.0;NO;" << entropy << "\n";
+
 	exp_array(data_exp, N, [](float x){return round(x * 32.0) / 32.0;});
     map = count_bytes(data_exp);
     X = calc_probability(map, N);
@@ -70,6 +81,8 @@ int main(int argc, char** argv){
 	"exponential_rounded_32");
 	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential_rounded_32.png");
 	delete hist;
+
+	data_file << N << ";" << "exponential;32.0/32.0;NO;" << entropy << "\n";
 
    	////////////////////////////////////
    	// uniform distribution
@@ -96,6 +109,8 @@ int main(int argc, char** argv){
 	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform_rounded_8.png");
 	delete hist;
 
+	data_file << N << ";" << "uniform;8.0/8.0;NO;" << entropy << "\n";
+
 	uniform_array(data_uniform, N, [](float x){return round(x * 16.0) / 16.0;});
     map = count_bytes(data_uniform);
     X = calc_probability(map, N);
@@ -104,6 +119,8 @@ int main(int argc, char** argv){
 	"uniform_rounded_16");
 	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform_rounded_16.png");
 	delete hist;
+
+	data_file << N << ";" << "uniform;16.0/16.0;NO;" << entropy << "\n";
 
 	uniform_array(data_uniform, N, [](float x){return round(x * 32.0) / 32.0;});
     map = count_bytes(data_uniform);
@@ -114,6 +131,8 @@ int main(int argc, char** argv){
 	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform_rounded_32.png");
 	delete hist;
 
+	data_file << N << ";" << "uniform;32.0/32.0;NO;" << entropy << "\n";
+
 	uniform_array(data_uniform, N, [](float x){return round(x * 64.0) / 64.0;});
     map = count_bytes(data_uniform);
     X = calc_probability(map, N);
@@ -122,6 +141,10 @@ int main(int argc, char** argv){
 	"uniform_rounded_64");
 	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform_rounded_64.png");
 	delete hist;
+
+	data_file << N << ";" << "uniform;64.0/64.0;NO;" << entropy << "\n";
+
+	data_file.close();
 
    	return 0;
 }
