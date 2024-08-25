@@ -136,5 +136,5 @@ void run_case(
 
 	delete hist;
 
-	file << N << ";" << "exponential;"+ rounding_num_str+"/"+ rounding_num_str +";Z_BEST_COMPRESSION;" << entropy << ";" << compressed_char_array.size() << "\n"; 
+	file << N << ";" << distr_name << ";"+ rounding_num_str+"/"+ rounding_num_str +";Z_BEST_COMPRESSION;" << entropy << ";" << compressed_char_array.size() << "\n"; 
 }
