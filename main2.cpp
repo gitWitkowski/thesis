@@ -7,6 +7,20 @@
 #include "THStack.h"
 #include "entropy.h"
 
+#define NO_ROUNDING -1
+#define BUILTIN_ROUND -2
+
+void run_case(
+	distr distribution_type,
+	std::vector<float> &array,
+	std::map<unsigned char const, size_t> &map,
+	TH1F *hist,
+	std::ofstream &file,
+	const std::string path,
+	double rounding_num = NO_ROUNDING,
+	std::function<float(float)> rounding_f = nullptr
+	);
+
 int main(int argc, char** argv){
 
 	// txt file for generated data
@@ -23,128 +37,108 @@ int main(int argc, char** argv){
 	}
 
    	////////////////////////////////////
-   	// exponential distribution
+   	//    exponential distribution    //
    	////////////////////////////////////
 
-   	// vector for generated data
+   	// prepare variables
    	std::vector<float> data_exp(N);
-   
-	exp_array(data_exp, N);
-    std::map<unsigned char const, size_t> map = count_bytes(data_exp);
-    std::vector<double> X = calc_probability(map, N);
-	double entropy = calc_entropy(X);
-	auto hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
-	"exponential");
-	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential.png");
-	delete hist;
+    std::map<unsigned char const, size_t> map;
+	TH1F *hist;
 
-	// data_file << N << ";" << "exponential;NO;NO;" << entropy << "\n"; 
-
-	exp_array(data_exp, N, [](float x){return round(x * 8.0) / 8.0;});
-    map = count_bytes(data_exp);
-    X = calc_probability(map, N);
-	entropy = calc_entropy(X);
-	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
-	"exponential_rounded_8");
-	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential_rounded_8.png");
-	delete hist;
-
-	data_file << N << ";" << "exponential;8.0/8.0;NO;" << entropy << "\n"; 
-
-	exp_array(data_exp, N, [](float x){return round(x * 10.0) / 10.0;});
-    map = count_bytes(data_exp);
-	X = calc_probability(map, N);
-	entropy = calc_entropy(X);
-	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
-	"exponential_rounded_10");
-	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential_rounded_10.png");
-	delete hist;
-
-	// data_file << N << ";" << "exponential;10.0/10.0;NO;" << entropy << "\n";
-
-	exp_array(data_exp, N, [](float x){return round(x * 16.0) / 16.0;});
-    map = count_bytes(data_exp);
-    X = calc_probability(map, N);
-	entropy = calc_entropy(X);
-	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
-	"exponential_rounded_16");
-	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential_rounded_16.png");
-	delete hist;
-
-	data_file << N << ";" << "exponential;16.0/16.0;NO;" << entropy << "\n";
-
-	exp_array(data_exp, N, [](float x){return round(x * 32.0) / 32.0;});
-    map = count_bytes(data_exp);
-    X = calc_probability(map, N);
-	entropy = calc_entropy(X);
-	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
-	"exponential_rounded_32");
-	save_histogram_to_file(hist, IMG_DIR_PATH + "exponential_rounded_32.png");
-	delete hist;
-
-	data_file << N << ";" << "exponential;32.0/32.0;NO;" << entropy << "\n";
+	run_case(distr::EXP, data_exp, map, hist, data_file, IMG_DIR_PATH, 2.0);
+	run_case(distr::EXP, data_exp, map, hist, data_file, IMG_DIR_PATH, 4.0);
+	run_case(distr::EXP, data_exp, map, hist, data_file, IMG_DIR_PATH, 8.0);
+	run_case(distr::EXP, data_exp, map, hist, data_file, IMG_DIR_PATH, 16.0);
+	run_case(distr::EXP, data_exp, map, hist, data_file, IMG_DIR_PATH, 32.0);
+	run_case(distr::EXP, data_exp, map, hist, data_file, IMG_DIR_PATH, 64.0);
 
    	////////////////////////////////////
-   	// uniform distribution
+   	//      uniform distribution      //
    	////////////////////////////////////
 
-   	// vector for generated data
+   	// prepare variables
    	std::vector<float> data_uniform(N);
    
-	uniform_array(data_uniform, N);
-    map = count_bytes(data_uniform);
-    X = calc_probability(map, N);
-	entropy = calc_entropy(X);
-	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
-	"uniform");
-	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform.png");
-	delete hist;
-
-	uniform_array(data_uniform, N, [](float x){return round(x * 8.0) / 8.0;});
-    map = count_bytes(data_uniform);
-    X = calc_probability(map, N);
-	entropy = calc_entropy(X);
-	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
-	"uniform_rounded_8");
-	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform_rounded_8.png");
-	delete hist;
-
-	data_file << N << ";" << "uniform;8.0/8.0;NO;" << entropy << "\n";
-
-	uniform_array(data_uniform, N, [](float x){return round(x * 16.0) / 16.0;});
-    map = count_bytes(data_uniform);
-    X = calc_probability(map, N);
-	entropy = calc_entropy(X);
-	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
-	"uniform_rounded_16");
-	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform_rounded_16.png");
-	delete hist;
-
-	data_file << N << ";" << "uniform;16.0/16.0;NO;" << entropy << "\n";
-
-	uniform_array(data_uniform, N, [](float x){return round(x * 32.0) / 32.0;});
-    map = count_bytes(data_uniform);
-    X = calc_probability(map, N);
-	entropy = calc_entropy(X);
-	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
-	"uniform_rounded_32");
-	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform_rounded_32.png");
-	delete hist;
-
-	data_file << N << ";" << "uniform;32.0/32.0;NO;" << entropy << "\n";
-
-	uniform_array(data_uniform, N, [](float x){return round(x * 64.0) / 64.0;});
-    map = count_bytes(data_uniform);
-    X = calc_probability(map, N);
-	entropy = calc_entropy(X);
-	hist = map_to_hist(map, "entropy: " + std::to_string(entropy),
-	"uniform_rounded_64");
-	save_histogram_to_file(hist, IMG_DIR_PATH + "uniform_rounded_64.png");
-	delete hist;
-
-	data_file << N << ";" << "uniform;64.0/64.0;NO;" << entropy << "\n";
+	run_case(distr::UNI, data_exp, map, hist, data_file, IMG_DIR_PATH, 2.0);
+	run_case(distr::UNI, data_exp, map, hist, data_file, IMG_DIR_PATH, 4.0);
+	run_case(distr::UNI, data_exp, map, hist, data_file, IMG_DIR_PATH, 8.0);
+	run_case(distr::UNI, data_exp, map, hist, data_file, IMG_DIR_PATH, 16.0);
+	run_case(distr::UNI, data_exp, map, hist, data_file, IMG_DIR_PATH, 32.0);
+	run_case(distr::UNI, data_exp, map, hist, data_file, IMG_DIR_PATH, 64.0);
 
 	data_file.close();
 
    	return 0;
+}
+
+void run_case(
+	distr distribution_type,
+	std::vector<float> &array,
+	std::map<unsigned char const, size_t> &map,
+	TH1F *hist,
+	std::ofstream &file,
+	const std::string path,
+	double rounding_num,
+	std::function<float(float)> rounding_f
+	){
+
+	std::string distr_name =  distribution_type == EXP ? "exponential" : "uniform";
+
+	// function used to fill an array
+	std::function<void(std::vector<float> &, size_t, std::function<float(float)>)> fill_array_f;
+
+	if(distribution_type == EXP)
+		fill_array_f = exp_array;
+	else if(distribution_type == UNI)
+		fill_array_f = uniform_array;
+	else
+		throw -1;
+
+	// format string with precision (1 decimal place)
+	std::ostringstream oss;
+    oss << std::fixed << std::setprecision(1) << rounding_num;
+    std::string rounding_num_str = rounding_num == BUILTIN_ROUND ? "0" : oss.str();
+
+	// set rounding type string
+	std::string rounding_type;
+	if(rounding_num == BUILTIN_ROUND)
+		rounding_type = "round()";
+	else if(rounding_num == NO_ROUNDING)
+		rounding_type = "NO";
+	else
+		rounding_type = rounding_num_str;
+
+	// set rounding function
+	if(rounding_num == NO_ROUNDING)
+		rounding_f = nullptr;
+	else if(rounding_num != BUILTIN_ROUND)
+		rounding_f = [rounding_num](float x){ return round(x * rounding_num) / rounding_num; };
+
+	// fill array with choosen function
+	fill_array_f(
+		array, 
+		N, 
+		rounding_f
+	);
+
+    map = count_bytes(array);
+
+    auto X = calc_probability(map, N);
+	
+	double entropy = calc_entropy(X);
+
+	hist = map_to_hist(
+		map,
+		"entropy: " + std::to_string(entropy),
+		distr_name + (rounding_f ? "_rounded_to_" + rounding_type : "")
+	);
+	
+	save_histogram_to_file(
+		hist, 
+		path + distr_name + (rounding_f ? "_rounded_to_" + rounding_type : "") + ".png"
+	);
+
+	delete hist;
+
+	file << N << ";" << distr_name << ";" << rounding_type << ";NO;" << entropy << ";" << array.size() * sizeof(float) << "\n"; 
 }
