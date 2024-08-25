@@ -20,7 +20,7 @@ chmod +x run.sh
 
 ## Results
 
-File `data.txt` contains all the data obtain in the process for various cases of different parameters such as: 
+File [`data.txt`](https://github.com/gitWitkowski/thesis/blob/main/data/data.txt) contains all the data obtain in the process for various cases of different parameters such as: 
 - **N** - quantity of floating point numbers in an array
 - **distribution** - distribution used to generate sample numbers (*exponential*, *uniform*)
 - **rounded** - rounding method applied to every element of the array (e.g "10.0/10.0" means that such opeartion `round(x * 10.0) / 10.0;` was applied, where `x` is an element of the array)
