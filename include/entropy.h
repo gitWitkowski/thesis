@@ -7,10 +7,14 @@
 #include "TH1.h"
 #include "TH1F.h"
 #include "TCanvas.h"
+#include <TError.h>
 #include <string>
 #include <zlib.h>
 #include <filesystem>
 #include <fstream>
+
+/// @brief enum for distribution type (exponential/uniform)
+enum distr {EXP, UNI};
 
 /// @brief path to data directory
 const std::string DATA_DIR_PATH = std::filesystem::current_path().string() + "/../data/";
