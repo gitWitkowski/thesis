@@ -27,38 +27,11 @@ include_directories(${INCLUDES})
 
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
-add_executable(main1 main1.cpp ${SOURCES})
+add_executable(main main.cpp ${SOURCES})
 
-target_include_directories(main1 PUBLIC ${ROOT_INCLUDE_DIRS})
-target_link_directories(main1 PUBLIC ${ROOT_LIBRARY_DIR})
-target_link_libraries(main1 ${ROOT_LIBRARIES})
-target_link_libraries(main1 ZLIB::ZLIB)
+target_include_directories(main PUBLIC ${ROOT_INCLUDE_DIRS})
+target_link_directories(main PUBLIC ${ROOT_LIBRARY_DIR})
+target_link_libraries(main ${ROOT_LIBRARIES})
+target_link_libraries(main ZLIB::ZLIB)
 
-add_custom_target(run1 ./main1)
-
-add_executable(main2 main2.cpp ${SOURCES})
-
-target_include_directories(main2 PUBLIC ${ROOT_INCLUDE_DIRS})
-target_link_directories(main2 PUBLIC ${ROOT_LIBRARY_DIR})
-target_link_libraries(main2 ${ROOT_LIBRARIES})
-target_link_libraries(main2 ZLIB::ZLIB)
-
-add_custom_target(run2 ./main2)
-
-add_executable(main3 main3.cpp ${SOURCES})
-
-target_include_directories(main3 PUBLIC ${ROOT_INCLUDE_DIRS})
-target_link_directories(main3 PUBLIC ${ROOT_LIBRARY_DIR})
-target_link_libraries(main3 ${ROOT_LIBRARIES})
-target_link_libraries(main3 ZLIB::ZLIB)
-
-add_custom_target(run3 ./main3)
-
-add_executable(main4 main4.cpp ${SOURCES})
-
-target_include_directories(main4 PUBLIC ${ROOT_INCLUDE_DIRS})
-target_link_directories(main4 PUBLIC ${ROOT_LIBRARY_DIR})
-target_link_libraries(main4 ${ROOT_LIBRARIES})
-target_link_libraries(main4 ZLIB::ZLIB)
-
-add_custom_target(run4 ./main4)
+add_custom_target(run ./main)

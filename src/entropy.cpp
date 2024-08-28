@@ -196,3 +196,76 @@ std::vector<unsigned char> deflate_vector(const std::vector<unsigned char>& data
     deflateEnd(&strm);
     return compressed_data;
 }
+
+void run_case(
+	distr distribution_type,
+	std::vector<float> &array,
+	std::vector<unsigned char> &char_array,
+	std::vector<unsigned char> &compressed_char_array,
+	std::map<unsigned char const, size_t> &map,
+	TH1F *hist,
+	std::ofstream &file,
+	const std::string path,
+	const std::string title,
+	std::function<float(float)> rounding_f,
+	int compression_level
+	){
+
+	// function used to fill an array
+	std::function<void(std::vector<float> &, size_t, std::function<float(float)>)> fill_array_f;
+
+	std::string distr_name;
+
+	if(distribution_type == EXP){
+		distr_name = "exponential";
+		fill_array_f = exp_array;
+	}
+	else if(distribution_type == UNI){
+		distr_name = "uniform";
+		fill_array_f = uniform_array;
+	}else
+		throw -1;
+
+
+	// fill array with choosen function
+	fill_array_f(
+		array, 
+		N, 
+		rounding_f
+	);
+
+	std::size_t size = 0;
+
+	if(compression_level != Z_NO_COMPRESSION){
+    	char_array = float_to_char_vector(array);
+		compressed_char_array = deflate_vector(char_array, compression_level);
+		size = compressed_char_array.size() * sizeof(char);
+
+		map = count_bytes(compressed_char_array);
+	}else{
+		map = count_bytes(array);
+		size = array.size() * sizeof(float);
+	}
+
+    std::vector<double> X = calc_probability(map, N);
+	
+	double entropy = calc_entropy(X);
+
+	std::string compresion_lvl_str = (compression_level == Z_NO_COMPRESSION ? "Z_NO_COMPRESSION" : "Z_BEST_COMPRESSION");
+
+	hist = map_to_hist(
+		map,
+		"entropy: " + std::to_string(entropy),
+		distr_name + "_" + compresion_lvl_str + "_" + title 
+	);
+	
+	save_histogram_to_file(
+		hist, 
+		path + distr_name + "_" + compresion_lvl_str + "_" + title + ".png"
+	);
+
+	delete hist;
+
+	file << N << ";" << distr_name << ";" + title + ";" << compresion_lvl_str 
+		 << ";" << entropy << ";" << size << "\n"; 
+}

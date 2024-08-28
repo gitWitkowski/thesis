@@ -13,6 +13,10 @@
 #include <filesystem>
 #include <fstream>
 
+/** Constants used as rounding type*/ 
+#define NO_ROUNDING -1
+#define BUILTIN_ROUND -2
+
 /// @brief enum for distribution type (exponential/uniform)
 enum distr {EXP, UNI};
 
@@ -124,3 +128,32 @@ std::vector<unsigned char> compress_vector(const std::vector<unsigned char>& dat
  * @return vector of unsigned chars with compressed data
  */
 std::vector<unsigned char> deflate_vector(const std::vector<unsigned char>& data, int compression_level);
+
+/**
+ * ___text___
+ * 
+ * @param distribution_type 
+ * @param array 
+ * @param char_array 
+ * @param compressed_char_array 
+ * @param map 
+ * @param hist 
+ * @param file 
+ * @param path 
+ * @param title 
+ * @param rounding_f 
+ * @param compression_level 
+ */
+void run_case(
+	distr distribution_type,
+	std::vector<float> &array,
+	std::vector<unsigned char> &char_array,
+	std::vector<unsigned char> &compressed_char_array,
+	std::map<unsigned char const, size_t> &map,
+	TH1F *hist,
+	std::ofstream &file,
+	const std::string path,
+	const std::string title,
+	std::function<float(float)> rounding_f,
+	int compression_level = Z_NO_COMPRESSION
+	);

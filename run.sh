@@ -5,7 +5,9 @@ rm -rf build/*
 rm -rf data/*
 
 # create build dir and move into it
-mkdir build
+if [ ! -d "build" ]; then
+    mkdir build
+fi
 cd build
 
 # generate makefile etc.
@@ -15,7 +17,4 @@ cmake ..
 make
 
 # run
-make run1
-make run2
-make run3
-make run4
+make run
