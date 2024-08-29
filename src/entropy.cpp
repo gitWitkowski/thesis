@@ -229,7 +229,7 @@ void run_case(
 	std::string distr_name;
 
 	// compression level as string used in title/file name
-	std::string compression_lvl_str = (compression_level == Z_NO_COMPRESSION ? "Z_NO_COMPRESSION" : "Z_BEST_COMPRESSION");
+	std::string compression_lvl_str = (compression_level == Z_NO_COMPRESSION ? "NO" : "Z_BEST_COMPRESSION");
 
 	// set name and function
 	if(distribution_type == EXP){

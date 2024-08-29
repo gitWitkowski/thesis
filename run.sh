@@ -18,3 +18,7 @@ make
 
 # run
 make run
+
+# exec python script
+cd ../PYTH
+python3 main.py
