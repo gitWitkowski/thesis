@@ -1,6 +1,18 @@
 #include "entropy.h"
 #include <iostream>
 
+std::function<float(float)> 
+	round_fun_10 		= [](float x){ return round(x * 10.0) / 10.0; },
+	round_fun_100 		= [](float x){ return round(x * 100.0) / 100.0; },
+	round_fun_1000		= [](float x){ return round(x * 1000.0) / 1000.0; },
+	round_fun_2 		= [](float x){ return round(x * 2.0) / 2.0; },
+	round_fun_4 		= [](float x){ return round(x * 4.0) / 4.0; },
+	round_fun_8 		= [](float x){ return round(x * 8.0) / 8.0; },
+	round_fun_16 		= [](float x){ return round(x * 16.0) / 16.0; },
+	round_fun_32 		= [](float x){ return round(x * 32.0) / 32.0; },
+	round_fun_64 		= [](float x){ return round(x * 64.0) / 64.0; },
+	round_fun_built_in	= [](float x){ return round(x); };
+
 double calc_entropy(std::vector<double> X){
    // formula:
    // https://en.wikipedia.org/wiki/Entropy_(information_theory)
@@ -203,7 +215,6 @@ void run_case(
 	std::vector<unsigned char> &char_array,
 	std::vector<unsigned char> &compressed_char_array,
 	std::map<unsigned char const, size_t> &map,
-	TH1F *hist,
 	std::ofstream &file,
 	const std::string path,
 	const std::string title,
@@ -214,8 +225,13 @@ void run_case(
 	// function used to fill an array
 	std::function<void(std::vector<float> &, size_t, std::function<float(float)>)> fill_array_f;
 
+	// distribution name
 	std::string distr_name;
 
+	// compression level as string used in title/file name
+	std::string compression_lvl_str = (compression_level == Z_NO_COMPRESSION ? "Z_NO_COMPRESSION" : "Z_BEST_COMPRESSION");
+
+	// set name and function
 	if(distribution_type == EXP){
 		distr_name = "exponential";
 		fill_array_f = exp_array;
@@ -226,7 +242,6 @@ void run_case(
 	}else
 		throw -1;
 
-
 	// fill array with choosen function
 	fill_array_f(
 		array, 
@@ -234,38 +249,41 @@ void run_case(
 		rounding_f
 	);
 
+	// size of data
 	std::size_t size = 0;
 
 	if(compression_level != Z_NO_COMPRESSION){
+		// convert data from float to char
     	char_array = float_to_char_vector(array);
+		// compress data
 		compressed_char_array = deflate_vector(char_array, compression_level);
-		size = compressed_char_array.size() * sizeof(char);
-
 		map = count_bytes(compressed_char_array);
+		size = compressed_char_array.size() * sizeof(char);
 	}else{
 		map = count_bytes(array);
 		size = array.size() * sizeof(float);
 	}
 
+	// calculate probability and entropy
     std::vector<double> X = calc_probability(map, N);
-	
 	double entropy = calc_entropy(X);
 
-	std::string compresion_lvl_str = (compression_level == Z_NO_COMPRESSION ? "Z_NO_COMPRESSION" : "Z_BEST_COMPRESSION");
-
-	hist = map_to_hist(
+	// create histogram from map
+	TH1F *hist = map_to_hist(
 		map,
 		"entropy: " + std::to_string(entropy),
-		distr_name + "_" + compresion_lvl_str + "_" + title 
+		distr_name + "_" + compression_lvl_str + "_" + title 
 	);
 	
+	// save histogram
 	save_histogram_to_file(
 		hist, 
-		path + distr_name + "_" + compresion_lvl_str + "_" + title + ".png"
+		path + distr_name + "_" + compression_lvl_str + "_" + title + ".png"
 	);
 
+	// free memory
 	delete hist;
 
-	file << N << ";" << distr_name << ";" + title + ";" << compresion_lvl_str 
-		 << ";" << entropy << ";" << size << "\n"; 
+	// write data to file
+	file << N << ";" << distr_name << ";" + title + ";" << compression_lvl_str << ";" << entropy << ";" << size << "\n"; 
 }

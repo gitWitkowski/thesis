@@ -13,10 +13,6 @@
 #include <filesystem>
 #include <fstream>
 
-/** Constants used as rounding type*/ 
-#define NO_ROUNDING -1
-#define BUILTIN_ROUND -2
-
 /// @brief enum for distribution type (exponential/uniform)
 enum distr {EXP, UNI};
 
@@ -25,6 +21,19 @@ const std::string DATA_DIR_PATH = std::filesystem::current_path().string() + "/.
 
 /// @brief number of generated numbers
 constexpr size_t N = 4'000;
+
+/// @brief custom rounding functions
+extern std::function<float(float)> 
+	round_fun_10,
+	round_fun_100,
+	round_fun_1000,
+	round_fun_2,
+	round_fun_4,
+	round_fun_8,
+	round_fun_16,
+	round_fun_32,
+	round_fun_64,
+	round_fun_built_in;
 
 /**
  * Calculates entropy based on given input values
@@ -53,27 +62,27 @@ void uniform_array(std::vector<float> &arr, size_t n, std::function<float(float)
 
 /**
  * Counts number of occurrences of each byte from given array
- * and returns map of bytes occurences
+ * and returns map of bytes occurrences
  * 
  * @param arr reference to vector for float values
- * @return map with byte as key and its number of occurences as value
+ * @return map with byte as key and its number of occurrences as value
  */
 std::map<unsigned char const, size_t> count_bytes(const std::vector<float> &data);
 
 /**
  * Counts number of occurrences of each byte from given array
- * and returns map of bytes occurences
+ * and returns map of bytes occurrences
  * 
  * @param arr reference to vector with data stored as chars
- * @return map with byte as key and its number of occurences as value
+ * @return map with byte as key and its number of occurrences as value
  */
 std::map<unsigned char const, size_t> count_bytes(const std::vector<unsigned char> &data);
 
 /**
- * Calculates probability of occurence for each byte in a map
+ * Calculates probability of occurrence for each byte in a map
  * and returns vector X of probabilities
  * 
- * @param occurrence_map map with byte as key and its number of occurences as value
+ * @param occurrence_map map with byte as key and its number of occurrences as value
  * @param n number of generated samples
  * @return vector of probabilities
  */
@@ -89,7 +98,7 @@ void save_histogram_to_file(TH1 *hist, std::string file_path);
 
 /**
  * Takes map and returns pointer to histogram
- * presenting number of byte occurences
+ * presenting number of byte occurrences
  * 
  * @param occurrence_map reference to map
  * @param name string for name
@@ -130,19 +139,18 @@ std::vector<unsigned char> compress_vector(const std::vector<unsigned char>& dat
 std::vector<unsigned char> deflate_vector(const std::vector<unsigned char>& data, int compression_level);
 
 /**
- * ___text___
  * 
- * @param distribution_type 
- * @param array 
- * @param char_array 
- * @param compressed_char_array 
- * @param map 
- * @param hist 
- * @param file 
- * @param path 
- * @param title 
- * @param rounding_f 
- * @param compression_level 
+ * 
+ * @param distribution_type enum specifying distribution used to generate data  
+ * @param array vector of generated data
+ * @param char_array vector of data stored in unsigned char
+ * @param compressed_char_array vector of data stored in unsigned char after compression
+ * @param map map with byte as key and its number of occurrences as value 
+ * @param file file for generated data
+ * @param path location for images to be saved in
+ * @param title text included in file names and histogram title
+ * @param rounding_f function applied to every element of array
+ * @param compression_level compression level
  */
 void run_case(
 	distr distribution_type,
@@ -150,7 +158,6 @@ void run_case(
 	std::vector<unsigned char> &char_array,
 	std::vector<unsigned char> &compressed_char_array,
 	std::map<unsigned char const, size_t> &map,
-	TH1F *hist,
 	std::ofstream &file,
 	const std::string path,
 	const std::string title,

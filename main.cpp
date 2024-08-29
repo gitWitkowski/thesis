@@ -23,81 +23,76 @@ int main(int argc, char** argv){
 	}
 
 	// data file headers
-	data_file << "N;distribution;rounded;compression;entropy;size\n";
+	data_file << "N;distribution;rounding_type;compression;entropy;size\n";
+
+	// prepare variables
+   	std::vector<float>	data_exp(N), data_uniform(N);
+	std::map<unsigned char const, size_t> map;
+    std::vector<unsigned char> data_exp_char, compressed_data_exp, data_uniform_char, compressed_data_uniform;
+	double entropy;
+
 
    	////////////////////////////////////
    	//    exponential distribution 	  //
    	////////////////////////////////////
 
-   	// prepare variables
-   	std::vector<float>	data_exp(N);
-	std::map<unsigned char const, size_t> map, map_before, map_after;
-	double entropy, entropy_before, entropy_after;
-	TH1F *hist, *hist_before, *hist_after;
-    std::vector<unsigned char> data_exp_char, compressed_data_exp;
-    std::vector<double> X, X_before, X_after;
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "no_round", nullptr);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_10", round_fun_10);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_100", round_fun_100);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_1000", round_fun_1000);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "built_in_round", round_fun_built_in);
 
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_2", [](float x){return round(x * 2.0) / 2.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_4", [](float x){return round(x * 4.0) / 4.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_8", [](float x){return round(x * 8.0) / 8.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_16", [](float x){return round(x * 16.0) / 16.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_32", [](float x){return round(x * 32.0) / 32;}, Z_BEST_COMPRESSION);
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_64", [](float x){return round(x * 64.0) / 64;}, Z_BEST_COMPRESSION);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "no_round", nullptr, Z_BEST_COMPRESSION);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_10", round_fun_10, Z_BEST_COMPRESSION);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_100", round_fun_100, Z_BEST_COMPRESSION);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_1000", round_fun_1000, Z_BEST_COMPRESSION);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "built_in_round", round_fun_built_in, Z_BEST_COMPRESSION);
 
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_2", [](float x){return round(x * 2.0) / 2.0;});
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_4", [](float x){return round(x * 4.0) / 4.0;});
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_8", [](float x){return round(x * 8.0) / 8.0;});
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_16", [](float x){return round(x * 16.0) / 16.0;});
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_32", [](float x){return round(x * 32.0) / 32;});
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_64", [](float x){return round(x * 64.0) / 64;});
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_2", round_fun_2);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_4", round_fun_4);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_8", round_fun_8);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_16", round_fun_16);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_32", round_fun_32);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_64", round_fun_64);
 
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_10", [](float x){return round(x * 10.0) / 10.0;});
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_100", [](float x){return round(x * 4.0) / 4.0;});
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_1000", [](float x){return round(x * 8.0) / 8.0;});
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "built_in_round", [](float x){return round(x);});
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "no_round", nullptr);
-
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_10", [](float x){return round(x * 10.0) / 10.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_100", [](float x){return round(x * 4.0) / 4.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_1000", [](float x){return round(x * 8.0) / 8.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "built_in_round", [](float x){return round(x);}, Z_BEST_COMPRESSION);
-	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "no_round", nullptr, Z_BEST_COMPRESSION);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_2", round_fun_2, Z_BEST_COMPRESSION);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_4", round_fun_4, Z_BEST_COMPRESSION);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_8", round_fun_8, Z_BEST_COMPRESSION);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_16", round_fun_16, Z_BEST_COMPRESSION);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_32", round_fun_32, Z_BEST_COMPRESSION);
+	run_case(distr::EXP, data_exp, data_exp_char, compressed_data_exp, map, data_file, IMG_DIR_PATH, "round_64", round_fun_64, Z_BEST_COMPRESSION);
 
 
 	////////////////////////////////////
    	// 		uniform distribution      //
    	////////////////////////////////////
+	
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "no_round", nullptr);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_10", round_fun_10);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_100", round_fun_100);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_1000", round_fun_1000);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "built_in_round", round_fun_built_in);
 
-   	// prepare variables
-   	std::vector<float> data_uniform(N);
-    std::vector<unsigned char> data_uniform_char;
-	std::vector<unsigned char> compressed_data_uniform;
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "no_round", nullptr, Z_BEST_COMPRESSION);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_10", round_fun_10, Z_BEST_COMPRESSION);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_100", round_fun_100, Z_BEST_COMPRESSION);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_1000", round_fun_1000, Z_BEST_COMPRESSION);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "built_in_round", round_fun_built_in, Z_BEST_COMPRESSION);
 
-	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_2", [](float x){return round(x * 2.0) / 2.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_4", [](float x){return round(x * 4.0) / 4.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_8", [](float x){return round(x * 8.0) / 8.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_16", [](float x){return round(x * 16.0) / 16.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_32", [](float x){return round(x * 32.0) / 32;}, Z_BEST_COMPRESSION);
-	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_64", [](float x){return round(x * 64.0) / 64;}, Z_BEST_COMPRESSION);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_2", round_fun_2);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_4", round_fun_4);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_8", round_fun_8);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_16", round_fun_16);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_32", round_fun_32);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_64", round_fun_64);
 
-	run_case(distr::UNI, data_uniform, data_exp_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_2", [](float x){return round(x * 2.0) / 2.0;});
-	run_case(distr::UNI, data_uniform, data_exp_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_4", [](float x){return round(x * 4.0) / 4.0;});
-	run_case(distr::UNI, data_uniform, data_exp_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_8", [](float x){return round(x * 8.0) / 8.0;});
-	run_case(distr::UNI, data_uniform, data_exp_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_16", [](float x){return round(x * 16.0) / 16.0;});
-	run_case(distr::UNI, data_uniform, data_exp_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_32", [](float x){return round(x * 32.0) / 32;});
-	run_case(distr::UNI, data_uniform, data_exp_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_64", [](float x){return round(x * 64.0) / 64;});
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_2", round_fun_2, Z_BEST_COMPRESSION);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_4", round_fun_4, Z_BEST_COMPRESSION);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_8", round_fun_8, Z_BEST_COMPRESSION);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_16", round_fun_16, Z_BEST_COMPRESSION);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_32", round_fun_32, Z_BEST_COMPRESSION);
+	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, data_file, IMG_DIR_PATH, "round_64", round_fun_64, Z_BEST_COMPRESSION);
 
-	run_case(distr::UNI, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_10", [](float x){return round(x * 10.0) / 10.0;});
-	run_case(distr::UNI, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_100", [](float x){return round(x * 4.0) / 4.0;});
-	run_case(distr::UNI, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "round_1000", [](float x){return round(x * 8.0) / 8.0;});
-	run_case(distr::UNI, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "built_in_round", [](float x){return round(x);});
-	run_case(distr::UNI, data_exp, data_exp_char, compressed_data_exp, map, hist, data_file, IMG_DIR_PATH, "no_round", nullptr);
-
-	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_10", [](float x){return round(x * 10.0) / 10.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_100", [](float x){return round(x * 4.0) / 4.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "round_1000", [](float x){return round(x * 8.0) / 8.0;}, Z_BEST_COMPRESSION);
-	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "built_in_round", [](float x){return round(x);}, Z_BEST_COMPRESSION);
-	run_case(distr::UNI, data_uniform, data_uniform_char, compressed_data_uniform, map, hist, data_file, IMG_DIR_PATH, "no_round", nullptr, Z_BEST_COMPRESSION);
 
 	data_file.close();
 
