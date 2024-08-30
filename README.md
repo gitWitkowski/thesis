@@ -3,6 +3,10 @@
 - [ROOT v6.30.04](https://root.cern/install/)
 - [zlib](https://www.zlib.net/) (zlib1g-dev)
 - cmake
+- Python
+- [Matplotlib](https://matplotlib.org/)
+- [seaborn](https://seaborn.pydata.org/)
+- [pandas](https://pandas.pydata.org/)
  
 ## How to run
 1. Source the appropriate script (if needed)
