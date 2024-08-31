@@ -1,8 +1,30 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from pandas.plotting import table
 
 df = pd.read_csv('../data/data.txt', delimiter=';')
+df_sorted = df.sort_values(by=['entropy'])
+df_sorted.index = [''] * len(df)
+rows, columns = df_sorted.shape
+
+fig, ax = plt.subplots(figsize=(20, 10))
+ax.axis('off') 
+tbl = table(ax, df_sorted, loc='center', cellLoc='center', colWidths=[0.11]*len(df.columns))
+tbl.auto_set_font_size(False)
+tbl.set_fontsize(12)
+tbl.scale(1.2, 1.2)
+
+for (i, j), cell in tbl.get_celld().items():
+    if i == 0:
+        cell.set_text_props(weight='bold')
+    cell.set_text_props(ha='center', va='center')
+    cell.set_edgecolor('black')
+    cell.set_linewidth(1)
+
+plt.savefig('../data/data.png', bbox_inches='tight', dpi=300)
+plt.close()
+
 df['dist_comp'] = df['distribution'] + ' | ' + df['compression']
 
 sns.set(style="darkgrid")
@@ -30,4 +52,4 @@ plt.ylabel('Entropy [bit]')
 plt.legend(title='Distribution | Compression', bbox_to_anchor=(1, 0.85), loc='center right', fontsize=13)
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.savefig('../data/data.png')  # Save the figure to a file (e.g., 'entropy_plot.png')
+plt.savefig('../data/entropy_values_comparison.png')  # Save the figure to a file (e.g., 'entropy_plot.png')
