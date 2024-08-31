@@ -31,3 +31,7 @@ File [`data.txt`](https://github.com/gitWitkowski/thesis/blob/main/data/data.txt
 - **compression** - compression level in zlib (*Z_NO_COMPRESSION*, *Z_BEST_SPEED*, *Z_BEST_COMPRESSION*, *Z_DEFAULT_COMPRESSION*)
 - **entropy** - Shannon entropy in bits
 - **size** - size of data in bytes (number of elements in `std::vector<unsigned char>`)
+
+Below you can see a bar chart that compares the obtained entropy values based on the rounding method, the distribution used, and whether the data was compressed.
+
+![entropy comparison](https://raw.githubusercontent.com/gitWitkowski/thesis/main/data/entropy_values_comparison.png)
