@@ -276,14 +276,16 @@ void run_case(
 	);
 	
 	// save histogram
-	save_histogram_to_file(
-		hist, 
-		path + distr_name + "_" + compression_lvl_str + "_" + title + ".png"
-	);
+	if(path != "")
+		save_histogram_to_file(
+			hist, 
+			path + distr_name + "_" + compression_lvl_str + "_" + title + ".png"
+		);
 
 	// free memory
 	delete hist;
 
 	// write data to file
-	file << N << ";" << distr_name << ";" + title + ";" << compression_lvl_str << ";" << entropy << ";" << size << "\n"; 
+	if(file)
+		file << N << ";" << distr_name << ";" + title + ";" << compression_lvl_str << ";" << entropy << ";" << size << "\n"; 
 }

@@ -1,10 +1,4 @@
 #include <iostream>
-#include "TRandom3.h"
-#include "TH1F.h"
-#include "TApplication.h"
-#include "TCanvas.h"
-#include "TRootCanvas.h"
-#include "THStack.h"
 #include "entropy.h"
 
 int main(int argc, char** argv){
@@ -29,7 +23,6 @@ int main(int argc, char** argv){
    	std::vector<float>	data_exp(N), data_uniform(N);
 	std::map<unsigned char const, size_t> map;
     std::vector<unsigned char> data_exp_char, compressed_data_exp, data_uniform_char, compressed_data_uniform;
-	double entropy;
 
 
    	////////////////////////////////////

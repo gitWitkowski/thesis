@@ -35,3 +35,12 @@ target_link_libraries(main ${ROOT_LIBRARIES})
 target_link_libraries(main ZLIB::ZLIB)
 
 add_custom_target(run ./main)
+
+add_executable(tree TTreeCompressionTest.cpp ${SOURCES})
+
+target_include_directories(tree PUBLIC ${ROOT_INCLUDE_DIRS})
+target_link_directories(tree PUBLIC ${ROOT_LIBRARY_DIR})
+target_link_libraries(tree ${ROOT_LIBRARIES})
+target_link_libraries(tree ZLIB::ZLIB)
+
+add_custom_target(run_tree ./tree)

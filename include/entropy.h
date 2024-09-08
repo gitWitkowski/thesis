@@ -1,17 +1,24 @@
 #pragma once
+
 #include <vector>
 #include <algorithm>
 #include <cmath>
 #include <map>
-#include "TRandom3.h"
-#include "TH1.h"
-#include "TH1F.h"
-#include "TCanvas.h"
-#include <TError.h>
 #include <string>
 #include <zlib.h>
 #include <filesystem>
 #include <fstream>
+
+#include "TRandom3.h"
+#include "TH1.h"
+#include "TH1F.h"
+#include "TCanvas.h"
+#include "TFile.h"
+#include "TTree.h"
+#include "TError.h"
+#include "TApplication.h"
+#include "TRootCanvas.h"
+#include "THStack.h"
 
 /// @brief enum for distribution type (exponential/uniform)
 enum distr {EXP, UNI};
