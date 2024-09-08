@@ -18,6 +18,7 @@ make
 
 # run
 make run
+make run_tree
 
 # exec python script
 cd ../PYTH
