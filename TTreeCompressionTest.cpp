@@ -86,6 +86,56 @@ int main(int argc, char** argv){
     std::cout << "\n\n";
 
 
+    std::vector<float> *vec;
+    TH1F *hist1 = new TH1F(labels[0].c_str(), "Byte occurrence frequency", 256, 0, 256);
+    TH1F *hist2 = new TH1F(labels[1].c_str(), "Byte occurrence frequency", 256, 0, 256);
+    TH1F *hist3 = new TH1F(labels[2].c_str(), "Byte occurrence frequency", 256, 0, 256);
+    TH1F *hist4 = new TH1F(labels[3].c_str(), "Byte occurrence frequency", 256, 0, 256);
+    TH1F *hist5 = new TH1F(labels[4].c_str(), "Byte occurrence frequency", 256, 0, 256);
+
+    std::vector<TH1F*> histograms{
+        hist1, hist2, hist3, hist4, hist5
+    };
+
+    auto hs = new THStack("hs","Stacked histograms EXP");
+
+    hs->Add(hist1);
+    hs->Add(hist2);
+    hs->Add(hist3);
+    hs->Add(hist4);
+    hs->Add(hist5);
+
+    for(int i=0; i<5; i++){
+        tree_exp->SetBranchAddress(labels[i].c_str(), &vec);
+        tree_exp->GetEntry(0);
+        for(float val : *vec){
+            unsigned char *bytes = reinterpret_cast<unsigned char*>(&val);
+            for (size_t j = 0; j < sizeof(float); ++j)
+                histograms[i]->Fill(bytes[j]);
+            }
+    }
+
+    hist1->Draw();
+    canvas->SaveAs((DATA_DIR_PATH + labels[0] + "_tree.png").c_str());
+
+    hist2->Draw();
+    canvas->SaveAs((DATA_DIR_PATH + labels[1] + "_tree.png").c_str());
+
+    hist3->Draw();
+    canvas->SaveAs((DATA_DIR_PATH + labels[2] + "_tree.png").c_str());
+
+    hist4->Draw();
+    canvas->SaveAs((DATA_DIR_PATH + labels[3] + "_tree.png").c_str());
+
+    hist5->Draw();
+    canvas->SaveAs((DATA_DIR_PATH + labels[4] + "_tree.png").c_str());
+
+    hs->Draw("pfc nostack");
+    canvas->SaveAs((DATA_DIR_PATH + "combined_hist_EXP.png").c_str());
+
+    delete hist1, hist2, hist3, hist4, hist5, hs; 
+
+
 	////////////////////////////////////
    	// 		uniform distribution      //
    	////////////////////////////////////
@@ -135,6 +185,56 @@ int main(int argc, char** argv){
     delete hist;
 
 
+    // std::vector<float> *vec2;
+    // hist1 = new TH1F(labels2[0].c_str(), "Byte occurrence frequency", 256, 0, 256);
+    // hist2 = new TH1F(labels2[1].c_str(), "Byte occurrence frequency", 256, 0, 256);
+    // hist3 = new TH1F(labels2[2].c_str(), "Byte occurrence frequency", 256, 0, 256);
+    // hist4 = new TH1F(labels2[3].c_str(), "Byte occurrence frequency", 256, 0, 256);
+    // hist5 = new TH1F(labels2[4].c_str(), "Byte occurrence frequency", 256, 0, 256);
+
+    // std::vector<TH1F*> histograms2{
+    //     hist1, hist2, hist3, hist4, hist5
+    // };
+
+    // hs = new THStack("hs","Stacked histograms UNI");
+
+    // hs->Add(hist1);
+    // hs->Add(hist2);
+    // hs->Add(hist3);
+    // hs->Add(hist4);
+    // hs->Add(hist5);
+
+    // for(int i=0; i<5; i++){
+    //     tree_uni->SetBranchAddress(labels2[i].c_str(), &vec2);
+    //     tree_uni->GetEntry(0);
+    //     for(float val : *vec2){
+    //         unsigned char *bytes = reinterpret_cast<unsigned char*>(&val);
+    //         for (size_t j = 0; j < sizeof(float); ++j)
+    //             histograms2[i]->Fill(bytes[j]);
+    //         }
+    // }
+
+    // hist1->Draw();
+    // canvas->SaveAs((DATA_DIR_PATH + labels2[0] + "_tree.png").c_str());
+
+    // hist2->Draw();
+    // canvas->SaveAs((DATA_DIR_PATH + labels2[1] + "_tree.png").c_str());
+
+    // hist3->Draw();
+    // canvas->SaveAs((DATA_DIR_PATH + labels2[2] + "_tree.png").c_str());
+
+    // hist4->Draw();
+    // canvas->SaveAs((DATA_DIR_PATH + labels2[3] + "_tree.png").c_str());
+
+    // hist5->Draw();
+    // canvas->SaveAs((DATA_DIR_PATH + labels2[4] + "_tree.png").c_str());
+
+    // hs->Draw("pfc nostack");
+    // canvas->SaveAs((DATA_DIR_PATH + "combined_hist_UNI.png").c_str());
+
+    // delete hist1, hist2, hist3, hist4, hist5, hs; 
+
+
     // close files
     file->Close();
 	data_file.close();
@@ -144,7 +244,7 @@ int main(int argc, char** argv){
     freopen("/dev/tty", "w", stdout);
 
     // free memory
-    delete file, canvas;
+    delete file, canvas, tree_exp, tree_uni;
 
    	return 0;
 }
