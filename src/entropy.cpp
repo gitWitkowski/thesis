@@ -58,6 +58,13 @@ void uniform_array(std::vector<float> &arr, size_t n, std::function<float(float)
     }
 }
 
+void array_apply_transform(std::vector<float> &arr, size_t n, std::function<float(float)> f){
+    // apply transform to every element
+    for(size_t i=0; i<n; ++i)
+    	if(f)
+        	arr[i] = f(arr[i]);
+}
+
 std::map<unsigned char const, size_t> count_bytes(const std::vector<float> &data){
    	// map: <byte, number of occurrences>
    	std::map<unsigned char const, size_t> occurrence_map;

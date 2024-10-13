@@ -19,6 +19,7 @@
 #include "TApplication.h"
 #include "TRootCanvas.h"
 #include "THStack.h"
+#include <TText.h>
 
 /// @brief enum for distribution type (exponential/uniform)
 enum distr {EXP, UNI};
@@ -64,8 +65,18 @@ void exp_array(std::vector<float> &arr, size_t n, std::function<float(float)> f 
  * 
  * @param arr reference to vector for float values
  * @param n length of an array
+ * @param f transform function
  */
 void uniform_array(std::vector<float> &arr, size_t n, std::function<float(float)> f = nullptr);
+
+/**
+ * Apply transformation defined by f function to every element of the std::vector
+ * 
+ * @param arr reference to vector
+ * @param n length of an array
+ * @param f transform function
+ */
+void array_apply_transform(std::vector<float> &arr, size_t n, std::function<float(float)> f);
 
 /**
  * Counts number of occurrences of each byte from given array
