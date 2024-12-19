@@ -36,9 +36,9 @@ void exp_array(std::vector<float> &arr, size_t n, std::function<float(float)> f)
     // fill with values
     for(size_t i=0; i<n; ++i){
     	if(f)
-        	arr[i] = f(rng.Exp(1.0));
+        	arr[i] = f(rng.Exp(1));
       	else
-        	arr[i] = rng.Exp(1.0);
+        	arr[i] = rng.Exp(1);
 	}
 }
 
@@ -52,9 +52,9 @@ void uniform_array(std::vector<float> &arr, size_t n, std::function<float(float)
     // fill with values
     for(size_t i=0; i<n; ++i){
       	if(f)
-         	arr[i] = f(rng.Uniform(100));
+         	arr[i] = f(rng.Uniform(5));
       	else
-         	arr[i] = rng.Uniform(100);
+         	arr[i] = rng.Uniform(5);
     }
 }
 
@@ -276,21 +276,36 @@ void run_case(
 	double entropy = calc_entropy(X);
 
 	// create histogram from map
-	TH1F *hist = map_to_hist(
+	TH1F *hist_bytes = map_to_hist(
 		map,
 		"entropy: " + std::to_string(entropy),
-		distr_name + "_" + compression_lvl_str + "_" + title 
+		distr_name + "_" + compression_lvl_str + "_" + title + "_bytes"
 	);
 	
 	// save histogram
 	if(path != "")
 		save_histogram_to_file(
-			hist, 
-			path + distr_name + "_" + compression_lvl_str + "_" + title + ".png"
+			hist_bytes, 
+			path + "bytes/" + distr_name + "_" + compression_lvl_str + "_" + title + "_bytes.png"
 		);
 
+	// create and save histogram with floating point numbers
+	TH1F *hist_values = new TH1F(
+		"values",
+		(distr_name + "_" + compression_lvl_str + "_" + title + "_values").c_str(),
+		50, 0, 5);
+	for(auto &val : array){
+		hist_values->Fill(val);
+	}
+	if(path != "")
+		save_histogram_to_file(
+			hist_values, 
+			path + "values/" + distr_name + "_" + compression_lvl_str + "_" + title + "_values.png"
+		);
+
+
 	// free memory
-	delete hist;
+	delete hist_bytes, hist_values;
 
 	// write data to file
 	if(file)

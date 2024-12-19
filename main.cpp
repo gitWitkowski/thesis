@@ -13,6 +13,8 @@ int main(int argc, char** argv){
 	if (!std::filesystem::exists(IMG_DIR_PATH)) {
         try {
             std::filesystem::create_directories(IMG_DIR_PATH);
+            std::filesystem::create_directories(IMG_DIR_PATH + "values/");
+            std::filesystem::create_directories(IMG_DIR_PATH + "bytes/");
         } catch (const std::exception& e) { }
 	}
 
