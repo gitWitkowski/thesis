@@ -52,9 +52,9 @@ void uniform_array(std::vector<float> &arr, size_t n, std::function<float(float)
     // fill with values
     for(size_t i=0; i<n; ++i){
       	if(f)
-         	arr[i] = f(rng.Uniform(5));
+         	arr[i] = f(rng.Uniform(10));
       	else
-         	arr[i] = rng.Uniform(5);
+         	arr[i] = rng.Uniform(10);
     }
 }
 
@@ -293,7 +293,7 @@ void run_case(
 	TH1F *hist_values = new TH1F(
 		"values",
 		(distr_name + "_" + compression_lvl_str + "_" + title + "_values").c_str(),
-		50, 0, 5);
+		30, 0, 10);
 	for(auto &val : array){
 		hist_values->Fill(val);
 	}
