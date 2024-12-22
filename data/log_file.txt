@@ -1,52 +1,52 @@
 ******************************************************************************
 *Tree    :tree EXP  : TTree for exponential distribution                     *
-*Entries :        1 : Total =           83763 bytes  File  Size =      40210 *
+*Entries :        1 : Total =           83763 bytes  File  Size =      40247 *
 *        :          : Tree compression factor =   2.04                       *
 ******************************************************************************
 *Br    0 :EXP_no_round : vector<float>                                       *
-*Entries :        1 : Total  Size=      16630 bytes  File Size  =      14653 *
+*Entries :        1 : Total  Size=      16630 bytes  File Size  =      14633 *
 *Baskets :        1 : Basket Size=      32000 bytes  Compression=   1.10     *
 *............................................................................*
 *Br    1 :EXP_1000  : vector<float>                                          *
-*Entries :        1 : Total  Size=      16610 bytes  File Size  =      11629 *
-*Baskets :        1 : Basket Size=      32000 bytes  Compression=   1.38     *
+*Entries :        1 : Total  Size=      16610 bytes  File Size  =      11605 *
+*Baskets :        1 : Basket Size=      32000 bytes  Compression=   1.39     *
 *............................................................................*
 *Br    2 :EXP_built_in_round : vector<float>                                 *
-*Entries :        1 : Total  Size=      16660 bytes  File Size  =       2772 *
-*Baskets :        1 : Basket Size=      32000 bytes  Compression=   5.81     *
+*Entries :        1 : Total  Size=      16660 bytes  File Size  =       2804 *
+*Baskets :        1 : Basket Size=      32000 bytes  Compression=   5.75     *
 *............................................................................*
 *Br    3 :EXP_2     : vector<float>                                          *
-*Entries :        1 : Total  Size=      16595 bytes  File Size  =       3562 *
-*Baskets :        1 : Basket Size=      32000 bytes  Compression=   4.52     *
+*Entries :        1 : Total  Size=      16595 bytes  File Size  =       3555 *
+*Baskets :        1 : Basket Size=      32000 bytes  Compression=   4.53     *
 *............................................................................*
 *Br    4 :EXP_64    : vector<float>                                          *
-*Entries :        1 : Total  Size=      16600 bytes  File Size  =       6780 *
-*Baskets :        1 : Basket Size=      32000 bytes  Compression=   2.37     *
+*Entries :        1 : Total  Size=      16600 bytes  File Size  =       6836 *
+*Baskets :        1 : Basket Size=      32000 bytes  Compression=   2.36     *
 *............................................................................*
 
 
 ******************************************************************************
 *Tree    :tree UNI  : TTree for uniform distribution                         *
-*Entries :        1 : Total =           83755 bytes  File  Size =      45126 *
-*        :          : Tree compression factor =   1.82                       *
+*Entries :        1 : Total =           83755 bytes  File  Size =      45141 *
+*        :          : Tree compression factor =   1.81                       *
 ******************************************************************************
 *Br    0 :UNI_no_round : vector<float>                                       *
-*Entries :        1 : Total  Size=      16630 bytes  File Size  =      14467 *
+*Entries :        1 : Total  Size=      16630 bytes  File Size  =      14490 *
 *Baskets :        1 : Basket Size=      32000 bytes  Compression=   1.11     *
 *............................................................................*
 *Br    1 :UNI_1000  : vector<float>                                          *
-*Entries :        1 : Total  Size=      16610 bytes  File Size  =      13239 *
+*Entries :        1 : Total  Size=      16610 bytes  File Size  =      13230 *
 *Baskets :        1 : Basket Size=      32000 bytes  Compression=   1.22     *
 *............................................................................*
 *Br    2 :UNI_built_in_round : vector<float>                                 *
-*Entries :        1 : Total  Size=      16660 bytes  File Size  =       4041 *
+*Entries :        1 : Total  Size=      16660 bytes  File Size  =       4034 *
 *Baskets :        1 : Basket Size=      32000 bytes  Compression=   3.99     *
 *............................................................................*
 *Br    3 :UNI_2     : vector<float>                                          *
-*Entries :        1 : Total  Size=      16595 bytes  File Size  =       4679 *
+*Entries :        1 : Total  Size=      16595 bytes  File Size  =       4678 *
 *Baskets :        1 : Basket Size=      32000 bytes  Compression=   3.44     *
 *............................................................................*
 *Br    4 :UNI_64    : vector<float>                                          *
-*Entries :        1 : Total  Size=      16600 bytes  File Size  =       7921 *
+*Entries :        1 : Total  Size=      16600 bytes  File Size  =       7930 *
 *Baskets :        1 : Basket Size=      32000 bytes  Compression=   2.03     *
 *............................................................................*
