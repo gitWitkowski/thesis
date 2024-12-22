@@ -173,46 +173,35 @@ std::vector<unsigned char> float_to_char_vector(const std::vector<float>& float_
     return char_data;
 }
 
-// https://www.zlib.net/manual.html and chat gpt
-std::vector<unsigned char> compress_vector(const std::vector<unsigned char>& data) {
-    uLongf compressed_size = compressBound(data.size());
-    std::vector<unsigned char> compressed_data(compressed_size);
-
-    if (compress(compressed_data.data(), &compressed_size, data.data(), data.size()) != Z_OK) {
-        throw std::runtime_error("Compression failed!");
-    }
-
-    compressed_data.resize(compressed_size); // Adjust the size to the actual compressed size
-    return compressed_data;
-}
-
-// https://www.zlib.net/manual.html and chat gpt
-std::vector<unsigned char> deflate_vector(const std::vector<unsigned char>& data, int compression_level) {
-    z_stream strm;
+// https://www.zlib.net/manual.html
+std::vector<unsigned char> compress_vector(const std::vector<unsigned char>& data, int compression_level) {
+    // zalloc, zfree and opaque must be initialized before by the call
+	z_stream strm;
     strm.zalloc = Z_NULL;
     strm.zfree = Z_NULL;
     strm.opaque = Z_NULL;
 
-    if (deflateInit(&strm, compression_level) != Z_OK) {
-        throw std::runtime_error("deflateInit failed!");
-    }
+	// initialize internal stream state for compression
+	assert(deflateInit(&strm, compression_level) == Z_OK);
 
-    strm.avail_in = data.size();
+	strm.avail_in = data.size();
     strm.next_in = const_cast<Bytef*>(reinterpret_cast<const Bytef*>(data.data()));
 
-    uLongf compressed_size = deflateBound(&strm, data.size());
+	// upper bound on the compressed size after deflation
+	uLongf compressed_size = deflateBound(&strm, data.size());
     std::vector<unsigned char> compressed_data(compressed_size);
 
     strm.avail_out = compressed_size;
     strm.next_out = compressed_data.data();
 
-    if (deflate(&strm, Z_FINISH) != Z_STREAM_END) {
-        deflateEnd(&strm);
-        throw std::runtime_error("deflate failed!");
-    }
+	// all compression done in 1 step, avail_out set to the value returned by deflateBound
+	// deflate is guaranteed to return Z_STREAM_END
+    deflate(&strm, Z_FINISH);
 
     compressed_data.resize(compressed_size - strm.avail_out);
-    deflateEnd(&strm);
+    // free all dynamically allocated data structures for this stream
+	assert(deflateEnd(&strm) == Z_OK);
+
     return compressed_data;
 }
 
@@ -226,6 +215,7 @@ void run_case(
 	const std::string path,
 	const std::string title,
 	std::function<float(float)> rounding_f,
+	bool save_byte_map,
 	int compression_level
 	){
 
@@ -263,7 +253,7 @@ void run_case(
 		// convert data from float to char
     	char_array = float_to_char_vector(array);
 		// compress data
-		compressed_char_array = deflate_vector(char_array, compression_level);
+		compressed_char_array = compress_vector(char_array, compression_level);
 		map = count_bytes(compressed_char_array);
 		size = compressed_char_array.size() * sizeof(char);
 	}else{
@@ -303,11 +293,19 @@ void run_case(
 			path + "values/" + distr_name + "_" + compression_lvl_str + "_" + title + "_values.png"
 		);
 
+	// write data to file
+	if(file)
+		file << N << ";" << distr_name << ";" + title + ";" << compression_lvl_str << ";" << entropy << ";" << size << "\n";
+
+	// save byte map to a file if requested
+	if(save_byte_map){
+		std::ofstream f(DATA_DIR_PATH + "bytes/" + distr_name + "_" + compression_lvl_str + "_" + title + "_bytes.txt", std::ios::app);
+		for(const auto [key, val] : map){
+			f << "0x" << std::uppercase << std::hex << (int)key << " : " << std::dec << val << "\n";
+		}
+		f.close();
+	}
 
 	// free memory
 	delete hist_bytes, hist_values;
-
-	// write data to file
-	if(file)
-		file << N << ";" << distr_name << ";" + title + ";" << compression_lvl_str << ";" << entropy << ";" << size << "\n"; 
 }

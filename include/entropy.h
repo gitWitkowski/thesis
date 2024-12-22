@@ -27,6 +27,9 @@ enum distr {EXP, UNI};
 /// @brief path to data directory
 const std::string DATA_DIR_PATH = std::filesystem::current_path().string() + "/../data/";
 
+/// @brief directory for images to be saved
+const std::string IMG_DIR_PATH = DATA_DIR_PATH + "img/";
+
 /// @brief number of generated numbers
 constexpr size_t N = 4'000;
 
@@ -139,22 +142,13 @@ TH1F *map_to_hist(
 std::vector<unsigned char> float_to_char_vector(const std::vector<float>& floats);
 
 /**
- * Takes vector of floats and converts 
- * data into vector of chars
- * 
- * @param floats vector of data to be converted
- * @return vector of unsigned chars with compressed data
- */
-std::vector<unsigned char> compress_vector(const std::vector<unsigned char>& data);
-
-/**
  * Takes vector of chars and compresses data according to choose compression level
  * 
  * @param data vector of data to be compressed
  * @param compression_level available options: Z_NO_COMPRESSION, Z_BEST_SPEED, Z_BEST_COMPRESSION, Z_DEFAULT_COMPRESSION
  * @return vector of unsigned chars with compressed data
  */
-std::vector<unsigned char> deflate_vector(const std::vector<unsigned char>& data, int compression_level);
+std::vector<unsigned char> compress_vector(const std::vector<unsigned char>& data, int compression_level);
 
 /**
  * 
@@ -168,6 +162,7 @@ std::vector<unsigned char> deflate_vector(const std::vector<unsigned char>& data
  * @param path location for images to be saved in
  * @param title text included in file names and histogram title
  * @param rounding_f function applied to every element of array
+ * @param save_byte_map flag indicating whether to save byte values to file
  * @param compression_level compression level
  */
 void run_case(
@@ -180,5 +175,6 @@ void run_case(
 	const std::string path,
 	const std::string title,
 	std::function<float(float)> rounding_f,
+	bool save_byte_map,
 	int compression_level = Z_NO_COMPRESSION
 	);

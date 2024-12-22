@@ -91,7 +91,7 @@ int main(int argc, char** argv){
     } 
 
     // save histogram image to file 
-    canvas->SaveAs((DATA_DIR_PATH + "compression_factor_exp.png").c_str());
+    canvas->SaveAs((IMG_DIR_PATH + "compression_factor_exp.png").c_str());
     delete hist;
 
 
@@ -162,7 +162,7 @@ int main(int argc, char** argv){
     } 
 
     // save histogram image to file 
-    canvas->SaveAs((DATA_DIR_PATH + "compression_factor_uni.png").c_str());
+    canvas->SaveAs((IMG_DIR_PATH + "compression_factor_uni.png").c_str());
 
     // close files
     file->Close();
