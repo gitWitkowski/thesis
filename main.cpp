@@ -3,6 +3,10 @@
 
 int main(int argc, char** argv){
 
+	// sets a global switch disabling the referencing
+	// added to prevent unwanted console messages 
+	TH1::AddDirectory(kFALSE);
+
 	// txt file for generated data
 	std::ofstream data_file(DATA_DIR_PATH + "data.txt", std::ios::app);
 
