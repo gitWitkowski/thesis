@@ -44,3 +44,12 @@ target_link_libraries(tree ${ROOT_LIBRARIES})
 target_link_libraries(tree ZLIB::ZLIB)
 
 add_custom_target(run_tree ./tree)
+
+add_executable(vector LorentzVectorCompressionTest.cpp ${SOURCES})
+
+target_include_directories(vector PUBLIC ${ROOT_INCLUDE_DIRS})
+target_link_directories(vector PUBLIC ${ROOT_LIBRARY_DIR})
+target_link_libraries(vector ${ROOT_LIBRARIES})
+target_link_libraries(vector ZLIB::ZLIB)
+
+add_custom_target(run_vector ./vector)

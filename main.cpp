@@ -1,4 +1,3 @@
-#include <iostream>
 #include "entropy.h"
 
 int main(int argc, char** argv){
@@ -8,7 +7,7 @@ int main(int argc, char** argv){
 	TH1::AddDirectory(kFALSE);
 
 	// txt file for generated data
-	std::ofstream data_file(DATA_DIR_PATH + "data.txt", std::ios::app);
+	std::ofstream data_file(DATA_DIR_PATH + "data.txt");
 
 	// create dir
 	if (!std::filesystem::exists(IMG_DIR_PATH)) {

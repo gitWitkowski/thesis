@@ -19,6 +19,7 @@ make
 # run
 make run
 make run_tree
+make run_vector
 
 # exec python script
 cd ../PYTH

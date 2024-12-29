@@ -63,4 +63,38 @@ plt.xticks(rotation=45) # rotated x axis labels
 plt.tight_layout() # adjust the padding
 
 # save plot
-plt.savefig('../data/img/entropy_values_comparison.png') 
+plt.savefig('../data/img/entropy_values_comparison.png')
+
+# read data from file
+df = pd.read_csv('../data/vector_data.txt', delimiter=';')
+
+# unpivot df
+df = df.melt(id_vars="round_indicator", var_name="var", value_name="values")
+
+# plot size
+fig, ax = plt.subplots(figsize=(8,8))
+
+# draw data as barplot
+sns.barplot(data=df, x="round_indicator", y="values", hue="var")
+
+# plot title and axis labels
+plt.title("Shannon entropy and compression factor\nbased on rounding operation (PxPyPz)", fontsize=20)
+plt.ylabel("Metric value")
+plt.xlabel("Applied transformation")
+
+# add legend and custom entries names
+handles, _ = ax.get_legend_handles_labels()
+plt.legend(handles=handles, labels=['Entropy [bit]', 'Compression factor'], title='Metric type')
+
+# add value for every bar
+for p in ax.patches:
+    ax.annotate(format(p.get_height(), '.2f'), # text
+                (0.01 + p.get_x() + p.get_width() / 2., p.get_height() - 0.5), # annotate position
+                ha='center', va='bottom', # alignment
+                xytext=(0, 5), # text pos
+                textcoords='offset points', # xytext coordinate system
+                fontsize=13,
+                color='white',fontweight='bold')
+
+# save plot as image
+plt.savefig('../data/img/vector.png')

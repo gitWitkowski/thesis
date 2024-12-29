@@ -1,25 +1,33 @@
 #pragma once
 
+/// STL includes
+#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <cmath>
 #include <map>
 #include <string>
-#include <zlib.h>
 #include <filesystem>
 #include <fstream>
 
-#include "TRandom3.h"
-#include "TH1.h"
-#include "TH1F.h"
-#include "TCanvas.h"
-#include "TFile.h"
-#include "TTree.h"
-#include "TError.h"
-#include "TApplication.h"
-#include "TRootCanvas.h"
-#include "THStack.h"
+/// zlib library
+#include <zlib.h>
+
+/// ROOT includes
+#include <TRandom3.h>
+#include <TH1.h>
+#include <TH1F.h>
+#include <TCanvas.h>
+#include <TFile.h>
+#include <TTree.h>
+#include <TError.h>
+#include <TApplication.h>
+#include <TRootCanvas.h>
+#include <THStack.h>
 #include <TText.h>
+#include <TLorentzVector.h>
+#include <Math/Vector4D.h>
+#include <Math/GenVector/PtEtaPhiM4D.h>
 
 /// @brief enum for distribution type (exponential/uniform)
 enum distr {EXP, UNI};
@@ -44,7 +52,17 @@ extern std::function<float(float)>
 	round_fun_16,
 	round_fun_32,
 	round_fun_64,
-	round_fun_built_in;
+	round_fun_built_in,
+	truncateFloat_14;
+
+/**
+ * Erases (sets to 0) given number of least significant bits from the float number
+ * 
+ * @param x float number to round 
+ * @param n number of bits to set to zero
+ * @return float number after truncation
+ */
+float truncateFloat(float x, int n);
 
 /**
  * Calculates entropy based on given input values

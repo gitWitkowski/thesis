@@ -1,5 +1,4 @@
 #include "entropy.h"
-#include <iostream>
 
 std::function<float(float)> 
 	round_fun_10 		= [](float x){ return round(x * 10.0) / 10.0; },
@@ -11,7 +10,19 @@ std::function<float(float)>
 	round_fun_16 		= [](float x){ return round(x * 16.0) / 16.0; },
 	round_fun_32 		= [](float x){ return round(x * 32.0) / 32.0; },
 	round_fun_64 		= [](float x){ return round(x * 64.0) / 64.0; },
-	round_fun_built_in	= [](float x){ return round(x); };
+	round_fun_built_in	= [](float x){ return round(x); },
+	truncateFloat_14	= [](float x){ return truncateFloat(x, 14); };
+
+float truncateFloat(float x, int n){
+    union {
+        float f;
+        uint32_t i;
+    } u;
+    u.f = x;
+    uint32_t mask = ~((1U << n) - 1);
+    u.i &= mask;
+    return u.f;
+}
 
 double calc_entropy(std::vector<double> X){
    // formula:
