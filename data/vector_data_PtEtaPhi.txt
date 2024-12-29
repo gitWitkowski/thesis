@@ -1,0 +1,3 @@
+entropy;comp_fact;round_indicator
+5.06889;1.63996;rounded
+7.37858;1.07539;default

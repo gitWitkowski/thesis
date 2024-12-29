@@ -30,6 +30,7 @@ for (i, j), cell in t.get_celld().items():
 plt.savefig('../data/img/data.png', bbox_inches='tight', dpi=300)
 plt.close()
 
+
 # new column with both distribution and compression
 df['dist_comp'] = df['distribution'] + ' | ' + df['compression']
 
@@ -65,8 +66,9 @@ plt.tight_layout() # adjust the padding
 # save plot
 plt.savefig('../data/img/entropy_values_comparison.png')
 
+
 # read data from file
-df = pd.read_csv('../data/vector_data.txt', delimiter=';')
+df = pd.read_csv('../data/vector_data_PxPyPz.txt', delimiter=';')
 
 # unpivot df
 df = df.melt(id_vars="round_indicator", var_name="var", value_name="values")
@@ -78,7 +80,42 @@ fig, ax = plt.subplots(figsize=(8,8))
 sns.barplot(data=df, x="round_indicator", y="values", hue="var")
 
 # plot title and axis labels
-plt.title("Shannon entropy and compression factor\nbased on rounding operation (PxPyPz)", fontsize=20)
+plt.title("Shannon entropy and compression factor after\nconversion to PxPyPz, based on rounding operation", fontsize=20)
+plt.ylabel("Metric value")
+plt.xlabel("Applied transformation")
+
+# add legend and custom entries names
+handles, _ = ax.get_legend_handles_labels()
+plt.legend(handles=handles, labels=['Entropy [bit]', 'Compression factor'], title='Metric type', loc='center right')
+
+# add value for every bar
+for p in ax.patches:
+    ax.annotate(format(p.get_height(), '.2f'), # text
+                (0.01 + p.get_x() + p.get_width() / 2., p.get_height() - 0.5), # annotate position
+                ha='center', va='bottom', # alignment
+                xytext=(0, 5), # text pos
+                textcoords='offset points', # xytext coordinate system
+                fontsize=13,
+                color='white',fontweight='bold')
+
+# save plot as image
+plt.savefig('../data/img/vector_PxPyPz.png')
+
+
+# read data from file
+df = pd.read_csv('../data/vector_data_PtEtaPhi.txt', delimiter=';')
+
+# unpivot df
+df = df.melt(id_vars="round_indicator", var_name="var", value_name="values")
+
+# plot size
+fig, ax = plt.subplots(figsize=(8,8))
+
+# draw data as barplot
+sns.barplot(data=df, x="round_indicator", y="values", hue="var")
+
+# plot title and axis labels
+plt.title("Shannon entropy and compression factor for PtEtaPhi,\nbased on rounding operation", fontsize=20)
 plt.ylabel("Metric value")
 plt.xlabel("Applied transformation")
 
@@ -97,4 +134,4 @@ for p in ax.patches:
                 color='white',fontweight='bold')
 
 # save plot as image
-plt.savefig('../data/img/vector.png')
+plt.savefig('../data/img/vector_PtEtaPhi.png')
