@@ -287,7 +287,7 @@ void run_case(
 	if(path != "")
 		save_histogram_to_file(
 			hist_bytes, 
-			path + "bytes/" + distr_name + "_" + compression_lvl_str + "_" + title + "_bytes.png"
+			path + "bytes/" + distr_name + "_" + compression_lvl_str + "_" + title + "_bytes.pdf"
 		);
 
 	// create and save histogram with floating point numbers
@@ -301,7 +301,7 @@ void run_case(
 	if(path != "")
 		save_histogram_to_file(
 			hist_values, 
-			path + "values/" + distr_name + "_" + compression_lvl_str + "_" + title + "_values.png"
+			path + "values/" + distr_name + "_" + compression_lvl_str + "_" + title + "_values.pdf"
 		);
 
 	// write data to file

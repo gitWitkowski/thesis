@@ -27,7 +27,7 @@ for (i, j), cell in t.get_celld().items():
     # center text in a cell
 
 # save table
-plt.savefig('../data/img/data.png', bbox_inches='tight', dpi=300)
+plt.savefig('../data/img/data.pdf', bbox_inches='tight', dpi=300)
 plt.close()
 
 
@@ -64,7 +64,7 @@ plt.xticks(rotation=45) # rotated x axis labels
 plt.tight_layout() # adjust the padding
 
 # save plot
-plt.savefig('../data/img/entropy_values_comparison.png')
+plt.savefig('../data/img/entropy_values_comparison.pdf')
 
 
 # read data from file
@@ -99,7 +99,7 @@ for p in ax.patches:
                 color='white',fontweight='bold')
 
 # save plot as image
-plt.savefig('../data/img/vector_PxPyPz.png')
+plt.savefig('../data/img/vector_PxPyPz.pdf')
 
 
 # read data from file
@@ -134,4 +134,4 @@ for p in ax.patches:
                 color='white',fontweight='bold')
 
 # save plot as image
-plt.savefig('../data/img/vector_PtEtaPhi.png')
+plt.savefig('../data/img/vector_PtEtaPhi.pdf')

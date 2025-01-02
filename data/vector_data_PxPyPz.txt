@@ -1,3 +1,3 @@
 entropy;comp_fact;round_indicator
-7.4776;1.06034;rounded
-7.482;1.06006;default
+7.48539;1.05931;rounded
+7.48435;1.05957;default

@@ -95,12 +95,12 @@ void lorentzVectorRoundCompress(bool round, std::ofstream &data_file_PxPyPz, std
     }
 
     // save parameter histograms
-    save_histogram_to_file(ptDistr.get(), IMG_DIR_PATH + "ptDistribution_"s + round_indicator +  ".png");
-    save_histogram_to_file(etaDistr.get(), IMG_DIR_PATH + "etaDistribution_"s + round_indicator +  ".png");
-    save_histogram_to_file(phiDistr.get(), IMG_DIR_PATH + "phiDistribution_"s + round_indicator +  ".png");
-    save_histogram_to_file(pxDistr.get(), IMG_DIR_PATH + "pxDistribution_"s + round_indicator +  ".png");
-    save_histogram_to_file(pyDistr.get(), IMG_DIR_PATH + "pyDistribution_"s + round_indicator +  ".png");
-    save_histogram_to_file(pzDistr.get(), IMG_DIR_PATH + "pzDistribution_"s + round_indicator +  ".png");
+    save_histogram_to_file(ptDistr.get(), IMG_DIR_PATH + "ptDistribution_"s + round_indicator +  ".pdf");
+    save_histogram_to_file(etaDistr.get(), IMG_DIR_PATH + "etaDistribution_"s + round_indicator +  ".pdf");
+    save_histogram_to_file(phiDistr.get(), IMG_DIR_PATH + "phiDistribution_"s + round_indicator +  ".pdf");
+    save_histogram_to_file(pxDistr.get(), IMG_DIR_PATH + "pxDistribution_"s + round_indicator +  ".pdf");
+    save_histogram_to_file(pyDistr.get(), IMG_DIR_PATH + "pyDistribution_"s + round_indicator +  ".pdf");
+    save_histogram_to_file(pzDistr.get(), IMG_DIR_PATH + "pzDistribution_"s + round_indicator +  ".pdf");
 
     // vector for storing all generated float values
     // later used to calculate entropy
