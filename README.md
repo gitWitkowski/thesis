@@ -34,4 +34,4 @@ File [`data.txt`](https://github.com/gitWitkowski/thesis/blob/main/data/data.txt
 
 Below you can see a bar chart that compares the obtained entropy values based on the rounding method, the distribution used, and whether the data was compressed.
 
-![entropy comparison](https://raw.githubusercontent.com/gitWitkowski/thesis/main/data/img/entropy_values_comparison.pdf)
+![entropy comparison](data/img/entropy_values_comparison.png)
