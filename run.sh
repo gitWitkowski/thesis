@@ -14,12 +14,13 @@ cd build
 cmake ..
 
 # compile
-make
+make || exit 1
 
 # run
-make run
-make run_tree
-make run_vector
+make run || exit 1
+make run_tree || exit 1
+make run_vector || exit 1
+make run_bit_entropy || exit 1
 
 # exec python script
 cd ../PYTH

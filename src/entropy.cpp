@@ -216,7 +216,7 @@ std::vector<unsigned char> compress_vector(const std::vector<unsigned char>& dat
     return compressed_data;
 }
 
-void run_case(
+double run_case(
 	distr distribution_type,
 	std::vector<float> &array,
 	std::vector<unsigned char> &char_array,
@@ -319,4 +319,14 @@ void run_case(
 
 	// free memory
 	delete hist_bytes, hist_values;
+
+	return entropy;
+}
+
+bool get_nth_bit(size_t n, const float value)
+{
+	uint32_t bits;
+	std::memcpy(&bits, &value, sizeof(float));
+
+	return (bits >> n) & 1u; 
 }

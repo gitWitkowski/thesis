@@ -9,6 +9,7 @@
 #include <string>
 #include <filesystem>
 #include <fstream>
+#include <iomanip>
 
 /// zlib library
 #include <zlib.h>
@@ -28,6 +29,7 @@
 #include <TLorentzVector.h>
 #include <Math/Vector4D.h>
 #include <Math/GenVector/PtEtaPhiM4D.h>
+#include <ROOT/RDataFrame.hxx>
 
 /// @brief enum for distribution type (exponential/uniform)
 enum distr {EXP, UNI};
@@ -183,7 +185,7 @@ std::vector<unsigned char> compress_vector(const std::vector<unsigned char>& dat
  * @param save_byte_map flag indicating whether to save byte values to file
  * @param compression_level compression level
  */
-void run_case(
+double run_case(
 	distr distribution_type,
 	std::vector<float> &array,
 	std::vector<unsigned char> &char_array,
@@ -196,3 +198,12 @@ void run_case(
 	bool save_byte_map,
 	int compression_level = Z_NO_COMPRESSION
 	);
+
+/**
+ * Takes n-th bit from the float value
+ * 
+ * @param n bit position to extract from the value
+ * @param value float to extract bit from
+ * @return bool indicating whether bit is set
+ */
+bool get_nth_bit(size_t n, const float value);

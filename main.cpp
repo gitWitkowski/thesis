@@ -16,6 +16,8 @@ int main(int argc, char** argv){
             std::filesystem::create_directories(IMG_DIR_PATH + "values/");
             std::filesystem::create_directories(IMG_DIR_PATH + "bytes/");
             std::filesystem::create_directories(DATA_DIR_PATH + "bytes/");
+            std::filesystem::create_directories(IMG_DIR_PATH + "bit_entropy/");
+            std::filesystem::create_directories(DATA_DIR_PATH + "bit_entropy/");
         } catch (const std::exception& e) { }
 	}
 

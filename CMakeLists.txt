@@ -53,3 +53,12 @@ target_link_libraries(vector ${ROOT_LIBRARIES})
 target_link_libraries(vector ZLIB::ZLIB)
 
 add_custom_target(run_vector ./vector)
+
+add_executable(bit_entropy bit_entropy.cpp ${SOURCES})
+
+target_include_directories(bit_entropy PUBLIC ${ROOT_INCLUDE_DIRS})
+target_link_directories(bit_entropy PUBLIC ${ROOT_LIBRARY_DIR})
+target_link_libraries(bit_entropy ${ROOT_LIBRARIES})
+target_link_libraries(bit_entropy ZLIB::ZLIB)
+
+add_custom_target(run_bit_entropy ./bit_entropy)
