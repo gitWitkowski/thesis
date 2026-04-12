@@ -134,33 +134,33 @@ int main(int argc, char** argv){
     flatten_vector_branch(*trk_pt_all, trk_pt_all_container);
     std::transform(trk_pt_all_container.cbegin(), trk_pt_all_container.cend(), std::back_inserter(trk_pt_all_poly_container), polynomial);
 
-    flatten_vector_branch(*trk_pt_1, trk_pt_1_container);
-    std::transform(trk_pt_1_container.cbegin(), trk_pt_1_container.cend(), std::back_inserter(trk_pt_1_poly_container), polynomial);
+    // flatten_vector_branch(*trk_pt_1, trk_pt_1_container);
+    // std::transform(trk_pt_1_container.cbegin(), trk_pt_1_container.cend(), std::back_inserter(trk_pt_1_poly_container), polynomial);
 
-    flatten_vector_branch(*trk_pt_2, trk_pt_2_container);
-    std::transform(trk_pt_2_container.cbegin(), trk_pt_2_container.cend(), std::back_inserter(trk_pt_2_poly_container), polynomial);
+    // flatten_vector_branch(*trk_pt_2, trk_pt_2_container);
+    // std::transform(trk_pt_2_container.cbegin(), trk_pt_2_container.cend(), std::back_inserter(trk_pt_2_poly_container), polynomial);
 
-    flatten_vector_branch(*trk_pt_3, trk_pt_3_container);
-    std::transform(trk_pt_3_container.cbegin(), trk_pt_3_container.cend(), std::back_inserter(trk_pt_3_poly_container), polynomial);
+    // flatten_vector_branch(*trk_pt_3, trk_pt_3_container);
+    // std::transform(trk_pt_3_container.cbegin(), trk_pt_3_container.cend(), std::back_inserter(trk_pt_3_poly_container), polynomial);
 
-    flatten_vector_branch(*trk_pt_4, trk_pt_4_container);
-    std::transform(trk_pt_4_container.cbegin(), trk_pt_4_container.cend(), std::back_inserter(trk_pt_4_poly_container), polynomial);
+    // flatten_vector_branch(*trk_pt_4, trk_pt_4_container);
+    // std::transform(trk_pt_4_container.cbegin(), trk_pt_4_container.cend(), std::back_inserter(trk_pt_4_poly_container), polynomial);
 
 
     calc_bits_entropy(trk_pt_all_container, "trk_pt_all", "trk_pt");
     calc_bits_entropy(trk_pt_all_poly_container, "trk_pt_all_poly", "trk_pt_poly");
 
-    calc_bits_entropy(trk_pt_1_container, "trk_pt_1", "trk_pt[trk_pt > 0.0 && trk_pt < 3.0]");
-    calc_bits_entropy(trk_pt_1_poly_container, "trk_pt_1_poly", "trk_pt[trk_pt > 0.0 && trk_pt < 3.0]");
+    // calc_bits_entropy(trk_pt_1_container, "trk_pt_1", "trk_pt[trk_pt > 0.0 && trk_pt < 3.0]");
+    // calc_bits_entropy(trk_pt_1_poly_container, "trk_pt_1_poly", "trk_pt[trk_pt > 0.0 && trk_pt < 3.0]");
     
-    calc_bits_entropy(trk_pt_2_container, "trk_pt_2", "trk_pt[trk_pt > 3.0 && trk_pt < 5.0]");
-    calc_bits_entropy(trk_pt_2_poly_container, "trk_pt_2_poly", "trk_pt[trk_pt > 3.0 && trk_pt < 5.0]");
+    // calc_bits_entropy(trk_pt_2_container, "trk_pt_2", "trk_pt[trk_pt > 3.0 && trk_pt < 5.0]");
+    // calc_bits_entropy(trk_pt_2_poly_container, "trk_pt_2_poly", "trk_pt[trk_pt > 3.0 && trk_pt < 5.0]");
     
-    calc_bits_entropy(trk_pt_3_container, "trk_pt_3", "trk_pt[trk_pt > 5.0 && trk_pt < 10.0]");
-    calc_bits_entropy(trk_pt_3_poly_container, "trk_pt_3_poly", "trk_pt[trk_pt > 5.0 && trk_pt < 10.0]");
+    // calc_bits_entropy(trk_pt_3_container, "trk_pt_3", "trk_pt[trk_pt > 5.0 && trk_pt < 10.0]");
+    // calc_bits_entropy(trk_pt_3_poly_container, "trk_pt_3_poly", "trk_pt[trk_pt > 5.0 && trk_pt < 10.0]");
     
-    calc_bits_entropy(trk_pt_4_container, "trk_pt_4", "trk_pt[trk_pt > 10.0]");
-    calc_bits_entropy(trk_pt_4_poly_container, "trk_pt_4_poly", "trk_pt[trk_pt > 10.0]");
+    // calc_bits_entropy(trk_pt_4_container, "trk_pt_4", "trk_pt[trk_pt > 10.0]");
+    // calc_bits_entropy(trk_pt_4_poly_container, "trk_pt_4_poly", "trk_pt[trk_pt > 10.0]");
     
     calc_bits_entropy(generated_gaus_container, "generated_gaus", "rng.Gaus(-0.02177, 1.355)");
     calc_bits_entropy(generated_exp_container, "generated_exp", "rng.Exp(1.5)");

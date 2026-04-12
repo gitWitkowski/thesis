@@ -18,10 +18,11 @@ make || exit 1
 
 # run
 make run || exit 1
-make run_tree || exit 1
-make run_vector || exit 1
+# make run_tree || exit 1
+# make run_vector || exit 1
 make run_bit_entropy || exit 1
 
 # exec python script
 cd ../PYTH
-python3 main.py
+# python3 main.py
+python3 bit_entropy.py
