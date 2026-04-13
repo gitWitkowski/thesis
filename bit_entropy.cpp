@@ -2,10 +2,22 @@
 
 const std::string ROOT_DATA_PATH = "/home/witkowski/2018.ntuple.root";
 
-float polynomial(float x)
+float polynomial_1(float x)
 {
-    //  $P(x) = \pi x^3 + \sqrt{2}x^2 + e$
-    return M_PI * x*x*x + std::sqrt(2.0f) * x*x + std::exp(1.0f);
+    // $f_1(x)=\pi x^4 + \sqrt{2} x^3 + e x^2 + 1.234567x$
+    return x * (1.234567f + x * (static_cast<float>(M_E) + x * (std::sqrt(2.0f) + x * static_cast<float>(M_PI))));
+}
+
+float polynomial_2(float x)
+{
+    // f_2(x)=\sin(2^{15} x)$
+    return std::sin(std::pow(2.0f, 15.0f) * x);
+}
+
+float polynomial_3(float x)
+{
+    // $f_3(x) = \ln(x)$
+    return std::log(x);
 }
 
 void flatten_vector_branch(const std::vector<ROOT::RVec<float>> &branchData, std::vector<float> &flatVector)
@@ -112,7 +124,7 @@ int main(int argc, char** argv){
         .Take<ROOT::RVec<float>>("df_range_4");
 
     std::vector<float> 
-        trk_pt_all_container{},     trk_pt_all_poly_container{},
+        trk_pt_all_container{},     trk_pt_all_poly_1_container{}, trk_pt_all_poly_2_container{}, trk_pt_all_poly_3_container{},
         trk_pt_1_container{},       trk_pt_1_poly_container{},
         trk_pt_2_container{},       trk_pt_2_poly_container{},
         trk_pt_3_container{},       trk_pt_3_poly_container{},
@@ -132,7 +144,9 @@ int main(int argc, char** argv){
     }
 
     flatten_vector_branch(*trk_pt_all, trk_pt_all_container);
-    std::transform(trk_pt_all_container.cbegin(), trk_pt_all_container.cend(), std::back_inserter(trk_pt_all_poly_container), polynomial);
+    std::transform(trk_pt_all_container.cbegin(), trk_pt_all_container.cend(), std::back_inserter(trk_pt_all_poly_1_container), polynomial_1);
+    std::transform(trk_pt_all_container.cbegin(), trk_pt_all_container.cend(), std::back_inserter(trk_pt_all_poly_2_container), polynomial_2);
+    std::transform(trk_pt_all_container.cbegin(), trk_pt_all_container.cend(), std::back_inserter(trk_pt_all_poly_3_container), polynomial_3);
 
     // flatten_vector_branch(*trk_pt_1, trk_pt_1_container);
     // std::transform(trk_pt_1_container.cbegin(), trk_pt_1_container.cend(), std::back_inserter(trk_pt_1_poly_container), polynomial);
@@ -148,7 +162,9 @@ int main(int argc, char** argv){
 
 
     calc_bits_entropy(trk_pt_all_container, "trk_pt_all", "trk_pt");
-    calc_bits_entropy(trk_pt_all_poly_container, "trk_pt_all_poly", "trk_pt_poly");
+    calc_bits_entropy(trk_pt_all_poly_1_container, "trk_pt_all_poly_1", "trk_pt_poly_1");
+    calc_bits_entropy(trk_pt_all_poly_2_container, "trk_pt_all_poly_2", "trk_pt_poly_2");
+    calc_bits_entropy(trk_pt_all_poly_3_container, "trk_pt_all_poly_3", "trk_pt_poly_3");
 
     // calc_bits_entropy(trk_pt_1_container, "trk_pt_1", "trk_pt[trk_pt > 0.0 && trk_pt < 3.0]");
     // calc_bits_entropy(trk_pt_1_poly_container, "trk_pt_1_poly", "trk_pt[trk_pt > 0.0 && trk_pt < 3.0]");
