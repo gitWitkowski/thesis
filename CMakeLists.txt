@@ -27,6 +27,15 @@ include_directories(${INCLUDES})
 
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
+add_executable(init_structure init_structure.cpp ${SOURCES})
+
+target_include_directories(init_structure PUBLIC ${ROOT_INCLUDE_DIRS})
+target_link_directories(init_structure PUBLIC ${ROOT_LIBRARY_DIR})
+target_link_libraries(init_structure ${ROOT_LIBRARIES})
+target_link_libraries(init_structure ZLIB::ZLIB)
+
+add_custom_target(run_init_structure ./init_structure)
+
 add_executable(main main.cpp ${SOURCES})
 
 target_include_directories(main PUBLIC ${ROOT_INCLUDE_DIRS})
@@ -62,3 +71,12 @@ target_link_libraries(bit_entropy ${ROOT_LIBRARIES})
 target_link_libraries(bit_entropy ZLIB::ZLIB)
 
 add_custom_target(run_bit_entropy ./bit_entropy)
+
+add_executable(bit_entropy_random_noise bit_entropy_random_noise.cpp ${SOURCES})
+
+target_include_directories(bit_entropy_random_noise PUBLIC ${ROOT_INCLUDE_DIRS})
+target_link_directories(bit_entropy_random_noise PUBLIC ${ROOT_LIBRARY_DIR})
+target_link_libraries(bit_entropy_random_noise ${ROOT_LIBRARIES})
+target_link_libraries(bit_entropy_random_noise ZLIB::ZLIB)
+
+add_custom_target(run_bit_entropy_random_noise ./bit_entropy_random_noise)

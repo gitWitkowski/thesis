@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
+#include <random>
 
 /// zlib library
 #include <zlib.h>
@@ -27,6 +28,9 @@
 #include <THStack.h>
 #include <TText.h>
 #include <TLorentzVector.h>
+#include <TPaletteAxis.h>
+#include <TStyle.h>
+#include <TPaveStats.h>
 #include <Math/Vector4D.h>
 #include <Math/GenVector/PtEtaPhiM4D.h>
 #include <ROOT/RDataFrame.hxx>
@@ -134,8 +138,9 @@ std::vector<double> calc_probability(std::map<unsigned char const, size_t> &occu
  * 
  * @param hist pointer to histogram class
  * @param file_path string where to save the file
+ * @param setLogz set log scale on Z axis
  */
-void save_histogram_to_file(TH1 *hist, std::string file_path);
+void save_histogram_to_file(TH1 *hist, std::string file_path, bool setLogz=false);
 
 /**
  * Takes map and returns pointer to histogram
@@ -207,3 +212,5 @@ double run_case(
  * @return bool indicating whether bit is set
  */
 bool get_nth_bit(size_t n, const float value);
+
+void flatten_vector_branch(const std::vector<ROOT::RVec<float>> &branchData, std::vector<float> &flatVector);

@@ -20,24 +20,6 @@ float polynomial_3(float x)
     return std::log(x);
 }
 
-void flatten_vector_branch(const std::vector<ROOT::RVec<float>> &branchData, std::vector<float> &flatVector)
-{
-    int sizeToReserve = 0;
-    for (int i=0; i<branchData.size(); ++i)
-    {
-        sizeToReserve += branchData.at(i).size();
-    }
-
-    flatVector.reserve(sizeToReserve);
-
-    for (int i=0; i<branchData.size(); ++i)
-    {
-        flatVector.insert(flatVector.end(), branchData.at(i).begin(), branchData.at(i).end());
-    }
-
-    // std::cout << "Size after flattening: " << flatVector.size() << "\n";
-}
-
 void calc_bits_entropy(std::vector<float> &flatVector, std::string fileName, std::string description)
 {
     std::ofstream data_file_bits(DATA_DIR_PATH + "bit_entropy/" + fileName + ".txt");

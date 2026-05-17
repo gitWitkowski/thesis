@@ -146,11 +146,14 @@ std::vector<double> calc_probability(std::map<unsigned char const, size_t> &occu
    	return X;
 }
 
-void save_histogram_to_file(TH1 *hist, std::string file_path){
-   	TCanvas *c = new TCanvas();
+void save_histogram_to_file(TH1 *hist, std::string file_path, bool setLogz){
+	gPad = nullptr;
+   	TCanvas c;
+	c.cd();
+	if (setLogz) c.SetLogz();
    	hist->Draw();
-   	c->SaveAs(file_path.c_str());
-   	delete c;
+	c.Update();
+   	c.SaveAs(file_path.c_str());
 }
 
 TH1F *map_to_hist(
@@ -329,4 +332,22 @@ bool get_nth_bit(size_t n, const float value)
 	std::memcpy(&bits, &value, sizeof(float));
 
 	return (bits >> n) & 1u; 
+}
+
+void flatten_vector_branch(const std::vector<ROOT::RVec<float>> &branchData, std::vector<float> &flatVector)
+{
+    int sizeToReserve = 0;
+    for (int i=0; i<branchData.size(); ++i)
+    {
+        sizeToReserve += branchData.at(i).size();
+    }
+
+    flatVector.reserve(sizeToReserve);
+
+    for (int i=0; i<branchData.size(); ++i)
+    {
+        flatVector.insert(flatVector.end(), branchData.at(i).begin(), branchData.at(i).end());
+    }
+
+    // std::cout << "Size after flattening: " << flatVector.size() << "\n";
 }
