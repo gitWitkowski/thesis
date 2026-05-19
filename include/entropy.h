@@ -30,6 +30,7 @@
 #include <TLorentzVector.h>
 #include <TPaletteAxis.h>
 #include <TStyle.h>
+#include <TLegend.h>
 #include <TPaveStats.h>
 #include <Math/Vector4D.h>
 #include <Math/GenVector/PtEtaPhiM4D.h>

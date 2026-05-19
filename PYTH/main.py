@@ -59,11 +59,12 @@ for p in ax.patches:
 plt.title('Entropy value for different rounding methods, distributions and compression', fontsize=18, fontweight='bold')
 plt.xlabel('Rounding type')
 plt.ylabel('Entropy [bit]')
-plt.legend(title='Distribution | Compression', bbox_to_anchor=(1, 0.85), loc='center right', fontsize=13)
+# plt.legend(title='Distribution | Compression', bbox_to_anchor=(1, 0.85), loc='center right', fontsize=13)
 plt.xticks(rotation=45) # rotated x axis labels
 plt.tight_layout() # adjust the padding
 
 # save plot
+plt.savefig('../data/img/entropy_values_comparison.png')
 plt.savefig('../data/img/entropy_values_comparison.pdf')
 
 
